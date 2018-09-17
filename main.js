@@ -25,16 +25,9 @@ class ProfessorPat {
 
         let manifest = [
             { id: "Background", src:   "background2.png" },
+            { id: "GameBackground", src:   "background.png" },
             { id: "Menu", src:   "shit menu.png" },
             { id: "F", src:   "f.png" },
-            // { id: "Paddle", src: "<?=Domain(1)?>/core/smelt_out/PalladiumBar.png" },
-            // { id: "Brick", src:  "<?=Domain(1)?>/core/smelt_out/Radiator.png" },
-            // { id: "Smelt0", src: "<?=Domain(1)?>/core/smelt_out/smelt00.png" },
-            // { id: "Smelt1", src: "<?=Domain(1)?>/core/smelt_out/smelt01.png" },
-            // { id: "Smelt2", src: "<?=Domain(1)?>/core/smelt_out/smelt02.png" },
-            // { id: "Smelt3", src: "<?=Domain(1)?>/core/smelt_out/smelt03.png" },
-            // { id: "Smelt4", src: "<?=Domain(1)?>/core/smelt_out/smelt04.png" },
-            // { id: "Smelt5", src: "<?=Domain(1)?>/core/smelt_out/smelt05.png" },
         ];
 
         preload.loadManifest(manifest);
@@ -61,18 +54,14 @@ class ProfessorPat {
         createjs.Ticker.addEventListener("tick", this.tick);
         
         this.createMainMenu();
-        // createBrickGrid();
-        // createPaddle();
-        // createBall();
-        // createScoreText();
-        // createLogoText();
-        // addToScore(0);
     
         // stage.on("stagemousemove", function(event) {
         // //   paddle.x = stage.mouseX;
         // });
     
+        // console.log(this);
         stage.on("stagemousedown", function(event) {
+            // console.log(this);
 
             if (game_state == 'menu') {
                 
@@ -82,13 +71,13 @@ class ProfessorPat {
 
                 if (event.rawX > top_corner[0] && event.rawX < bottom_corner[0]
                  && event.rawY > top_corner[1] && event.rawY < bottom_corner[1]) {
-                    alert("Start Game");
+                    this.startGame();
                 }
-    
+
             }
             console.log(event.rawX, event.rawY);
             
-        });
+        }, this);
     
         // window.onkeyup = keyUpHandler;
         // window.onkeydown = keyDownHandler;
@@ -101,6 +90,20 @@ class ProfessorPat {
         
         stage.update();
         
+    }
+
+    startGame() {
+        // alert("Start Game");
+
+        game = new Game();
+        game_state = 'game';
+
+        this.unloadMainMenu();
+    }
+
+    unloadMainMenu() {
+        stage.removeChild(this.menu_text);
+        this.background.image = preload.getResult('GameBackground');
     }
     
     createMainMenu() {
