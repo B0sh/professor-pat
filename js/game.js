@@ -30,6 +30,7 @@ class Game {
 
     nextProblem() {
         var grid = this.level.generate();
+        grid.render();
         console.log(grid);
 
         var startGuess = getRandomInt(1, 3);

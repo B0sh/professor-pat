@@ -7,12 +7,17 @@ class Grid {
     this.tile_height = tile_height;
     this.equation = equation;
 
+    this.tiles = [];
+
     console.log(this);
 
     this.generate();
   }
 
   generate() {
+  }
+
+  render() {
     // loop through all tiles
 
     var slot = 0;
@@ -26,6 +31,18 @@ class Grid {
   }
 
   addTile(x, y, active) {
+    let tile;
+    if (active == true) 
+      tile = new createjs.Bitmap(preload.getResult('OrangePerson'));
+    else
+      tile = new createjs.Bitmap(preload.getResult('GreenPerson'));
 
+    tile.x = 32 * (x + 1) * 1.1;
+    tile.y = 32 * (y + 1) * 1.1;
+
+    stage.addChild(tile);
+
+    this.tiles.push(tile);
+    
   }
 }

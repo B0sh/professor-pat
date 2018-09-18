@@ -27,7 +27,10 @@ class ProfessorPat {
             { id: "Background", src:   "images/background2.png" },
             { id: "GameBackground", src:   "images/background.png" },
             { id: "Menu", src:   "images/shit menu.png" },
-            { id: "F", src:   "f.png" },
+            { id: "OrangePerson", src:   "images/person-orange.png" },
+            { id: "PurplePerson", src:   "images/person-purple.png" },
+            { id: "GreenPerson", src:   "images/person-green.png" },
+            // { id: "F", src:   "f.png" },
         ];
 
         preload.loadManifest(manifest);

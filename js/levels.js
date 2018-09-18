@@ -1,3 +1,4 @@
+'use strict'; 
 
 // level.generate() needs to return some set of properties
 // call generate AT every new map creation
@@ -9,7 +10,7 @@ var levels = {
         "generate": function () {
             
             console.log(equations["single"].generate([3, 6]));
-            return new Grid(12, 10, 
+            return new Grid(12, 8, 
                 equations["single"].generate([3, 6]));
 
         },
