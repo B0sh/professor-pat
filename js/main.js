@@ -130,11 +130,6 @@ class ProfessorPat {
 
         this.menu_text = new createjs.Bitmap(preload.getResult('Menu'));
 
-        // this.background = new createjs.Shape();
-        // this.background.graphics.beginFill('#CFFAA5');
-        // this.background.graphics.drawRect(0, 0, 135135, 151351355);
-        // this.background.graphics.endFill();
-
         this.menu_text.regX = 0;
         this.menu_text.regY = 0;
         this.menu_text.scaleX = 1;
@@ -146,9 +141,6 @@ class ProfessorPat {
         return true;
     }
 }
-
-
-
 
 
 
