@@ -9,7 +9,17 @@ class Grid {
 
     this.tiles = [];
 
-    console.log(this);
+    let colors = [
+      'OrangePerson',
+      'GreenPerson',
+      'PurplePerson',
+    ];
+
+    let rand = getRandomInt(0, colors.length - 1);
+    let rand2 = getRandomIntNot(0, colors.length - 1, [ rand ] );
+
+    this.person_inactive = colors[rand];
+    this.person_active = colors[rand2];
 
     this.generate();
   }
@@ -19,7 +29,6 @@ class Grid {
 
   render() {
     // loop through all tiles
-
     var slot = 0;
     for (let y = 0; y < this.tile_height; y++) {
       for (let x = 0; x < this.tile_width; x++) {
@@ -33,9 +42,9 @@ class Grid {
   addTile(x, y, active) {
     let tile;
     if (active == true) 
-      tile = new createjs.Bitmap(preload.getResult('OrangePerson'));
+      tile = new createjs.Bitmap(preload.getResult(this.person_active));
     else
-      tile = new createjs.Bitmap(preload.getResult('GreenPerson'));
+      tile = new createjs.Bitmap(preload.getResult(this.person_inactive));
 
     tile.x = 32 * (x + 1) * 1.1;
     tile.y = 32 * (y + 1) * 1.1;

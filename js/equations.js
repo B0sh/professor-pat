@@ -1,3 +1,5 @@
+'use strict';
+
 function Equation(id, generate, is) {
   this.id = id;
   this.generate = generate;

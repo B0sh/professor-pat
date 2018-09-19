@@ -172,6 +172,7 @@ function shuffle(array) {
   }
   
   function getRandomIntNot (min, max, not) {
+      let randy;
       do {
         randy = Math.floor(Math.random() * (max - min + 1)) + min;
       } while (not.indexOf(randy) !== -1)

@@ -1,3 +1,4 @@
+var volume = 0;
 
 // https://stackoverflow.com/questions/46926033/create-seamless-loop-of-audio-web
 var actx = new (AudioContext || webkitAudioContext)(),
@@ -31,7 +32,8 @@ function initAudio(abuffer) {
 }
 
 function playAudio() {
-    audioSourceNode.start();
+    if (volume != 0)
+        audioSourceNode.start();
 }
 
 function stopAudio() {
