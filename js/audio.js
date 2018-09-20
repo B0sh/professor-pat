@@ -1,4 +1,4 @@
-var volume = 0;
+var volume = 1;
 
 // https://stackoverflow.com/questions/46926033/create-seamless-loop-of-audio-web
 var actx = new (AudioContext || webkitAudioContext)(),

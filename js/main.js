@@ -27,6 +27,8 @@ class ProfessorPat {
             { id: "Background", src:   "images/background2.png" },
             { id: "GameBackground", src:   "images/background.png" },
             { id: "Menu", src:   "images/shit menu.png" },
+            { id: "RedPerson", src:   "images/person-red.png" },
+            { id: "YellowPerson", src:   "images/person-yellow.png" },
             { id: "OrangePerson", src:   "images/person-orange.png" },
             { id: "PurplePerson", src:   "images/person-purple.png" },
             { id: "GreenPerson", src:   "images/person-green.png" },
@@ -78,7 +80,7 @@ class ProfessorPat {
                 }
 
             }
-            console.log(event.rawX, event.rawY);
+            // console.log(event.rawX, event.rawY);
             
         }, this);
     

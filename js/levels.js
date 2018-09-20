@@ -2,6 +2,8 @@
 
 // level.generate() needs to return some set of properties
 // call generate AT every new map creation
+
+// 11x11 is the max number
 var levels = {
     "1": {
         "id": 1,
@@ -9,8 +11,7 @@ var levels = {
         "toAdd": 0.08,
         "generate": function () {
             
-            console.log(equations["single"].generate([3, 6]));
-            return new Grid(12, 8, 
+            return new Grid(11, 11, 
                 equations["single"].generate([3, 6]));
 
         },

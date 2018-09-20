@@ -13,6 +13,8 @@ class Grid {
       'OrangePerson',
       'GreenPerson',
       'PurplePerson',
+      'RedPerson',
+      'YellowPerson',
     ];
 
     let rand = getRandomInt(0, colors.length - 1);
@@ -40,18 +42,41 @@ class Grid {
   }
 
   addTile(x, y, active) {
-    let tile;
+    
+    let person_image;
     if (active == true) 
-      tile = new createjs.Bitmap(preload.getResult(this.person_active));
+      person_image = preload.getResult(this.person_active);
     else
-      tile = new createjs.Bitmap(preload.getResult(this.person_inactive));
+      person_image = preload.getResult(this.person_inactive);
 
-    tile.x = 32 * (x + 1) * 1.1;
-    tile.y = 32 * (y + 1) * 1.1;
+    var data = {
+        images: [ person_image ],
+        framerate: 5,
+        frames: {
+          width:32, 
+          height:32
+        },
+        animations: {
+            idle: {
+              speed: 1/7,
+              frames: [0, 1, 2, 1]
+            },
+        }
+    };
 
-    stage.addChild(tile);
+    let spritesheet = new createjs.SpriteSheet(data);
+    let animation = new createjs.Sprite(spritesheet, "idle");
 
-    this.tiles.push(tile);
+    
+
+    animation.x = 25 + 34 * (x) ;
+    animation.y = 90 + 34 * (y) ;
+
+    // console.log(animation, spritesheet);
+
+    stage.addChild(animation);
+
+    this.tiles.push(animation);
     
   }
 }
