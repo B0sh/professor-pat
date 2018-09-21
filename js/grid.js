@@ -41,6 +41,13 @@ class Grid {
     }
   }
 
+  destroy() {
+    for (let i = 0; i < this.tiles.length; i++) 
+    {
+      stage.removeChild(this.tiles[i]);
+    }
+  }
+
   addTile(x, y, active) {
     
     let person_image;
@@ -67,8 +74,6 @@ class Grid {
     let spritesheet = new createjs.SpriteSheet(data);
     let animation = new createjs.Sprite(spritesheet, "idle");
 
-    
-
     animation.x = 25 + 34 * (x) ;
     animation.y = 90 + 34 * (y) ;
 
@@ -77,6 +82,6 @@ class Grid {
     stage.addChild(animation);
 
     this.tiles.push(animation);
-    
+
   }
 }

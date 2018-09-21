@@ -5,10 +5,11 @@
 
 // 11x11 is the max number
 var levels = {
-    "1": {
+    "level1": {
         "id": 1,
         "question_count": 5,
         "toAdd": 0.08,
+        "next_level": "level2",
         "generate": function () {
             
             return new Grid(11, 11, 
@@ -16,10 +17,11 @@ var levels = {
 
         },
     },
-    "2": {
+    "level2": {
         "id": 2,
         "question_count": 6,
         "toAdd": 0.1,
+        "next_level": "level3",
         "generate": function () {
 
             return new Grid(getRandomInt(10, 11), getRandomInt(9, 10),
@@ -27,10 +29,11 @@ var levels = {
             
         },
     },
-    "3": {
-        "id": 4,
+    "level3": {
+        "id": 3,
         "question_count": 8,
         "toAdd": 0.1,
+        "next_level": "level4",
         "generate": function () {
 
             return new Grid(getRandomInt(4, 7), getRandomInt(4, 7),
@@ -38,10 +41,11 @@ var levels = {
 
         },
     },
-    "4": {
+    "level4": {
         "id": 4,
         "question_count": 10,
         "toAdd": 0.12,
+        "next_level": "Done",
         "generate": function () {
             
             return new Grid(12, 10,

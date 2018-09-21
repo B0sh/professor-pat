@@ -8,8 +8,11 @@ class Game {
         this.ToAdd = .1;
         this.Lives = 3;
 
+        this.grid;
         this.problemPoints = 999;
-        this.level = levels[1];
+        this.level = levels["level1"];
+        console.log("CORRECT?", this.level);
+        this.level_problems = 0;
 
         this.createScoreText();
         this.initalizeGui();
@@ -46,9 +49,21 @@ class Game {
     }
 
     nextProblem() {
-        var grid = this.level.generate();
-        grid.render();
-        console.log(grid);
+        // unrender for performance ofc
+        if (this.grid) 
+            this.grid.destroy();
+
+        // level up!
+        this.level_problems++;
+        if (this.level_problems > this.level.question_count) {
+            this.level_problems = 0;
+            this.level = levels[this.level.next_level];
+            this.levelText.text = "Level " + this.level.id;
+        }
+
+        this.grid = this.level.generate();
+        this.grid.render();
+        console.log(this.grid);
 
         var startGuess = getRandomInt(1, 3);
         switch (startGuess) {

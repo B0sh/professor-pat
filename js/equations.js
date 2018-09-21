@@ -50,8 +50,9 @@ var equations = {
         "Every " + genChoice() ]
 
       this.inPattern = [];
-      q = 0, n = 0;
-      for (y = 1; y <= 2500; y++) {
+      
+      let q = 0, n = 0;
+      for (let y = 1; y <= 2500; y++) {
         q++;
         if (q == this.number[n]) {
           this.inPattern.push(y);
@@ -77,7 +78,7 @@ var equations = {
       this.question = "" + this.number + "^x";
 
       this.inPattern = [];
-      for (y = 0; y <= 10; y++) {
+      for (let y = 0; y <= 10; y++) {
         this.inPattern.push(Math.pow(y, this.number));
       }
 

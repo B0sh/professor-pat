@@ -2,11 +2,12 @@
 
 var stage;
 var preload;
+var pat;
 var game;
 var game_state = 'menu';
 
 $(document).ready(function() {
-    game = new ProfessorPat();
+    pat = new ProfessorPat();
 });
 
 // set up the game / load main menu
@@ -78,6 +79,10 @@ class ProfessorPat {
                  && event.rawY > top_corner[1] && event.rawY < bottom_corner[1]) {
                     this.startGame();
                 }
+
+            } else {
+
+                game.nextProblem();
 
             }
             // console.log(event.rawX, event.rawY);
