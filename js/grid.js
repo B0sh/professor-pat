@@ -74,6 +74,9 @@ class Grid {
     let spritesheet = new createjs.SpriteSheet(data);
     let animation = new createjs.Sprite(spritesheet, "idle");
 
+    animation.rotation = getRandomInt(-45, 45);
+
+
     animation.x = 25 + 34 * (x) ;
     animation.y = 90 + 34 * (y) ;
 

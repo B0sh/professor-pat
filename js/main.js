@@ -1,5 +1,8 @@
 'use strict';
 
+var BACKGROUND_COUNT = 15;
+var temp = 1;
+
 var stage;
 var preload;
 var pat;
@@ -26,7 +29,7 @@ class ProfessorPat {
 
         let manifest = [
             { id: "Background", src:   "images/background2.png" },
-            { id: "GameBackground", src:   "images/background.png" },
+            { id: "GameBackground", src:   "images/background0.png" },
             { id: "Menu", src:   "images/shit menu.png" },
             { id: "RedPerson", src:   "images/person-red.png" },
             { id: "YellowPerson", src:   "images/person-yellow.png" },
@@ -35,6 +38,13 @@ class ProfessorPat {
             { id: "GreenPerson", src:   "images/person-green.png" },
             // { id: "F", src:   "f.png" },
         ];
+
+        for (let i  = 0; i < BACKGROUND_COUNT; i++) {
+            manifest.push({
+                id: "Background" + i, 
+                src: "images/background" + i + ".png"
+            });
+        }
 
         preload.loadManifest(manifest);
     }
@@ -83,6 +93,11 @@ class ProfessorPat {
             } else {
 
                 game.nextProblem();
+                let rand = getRandomInt(1, 9);
+                temp++;
+                console.log(temp);
+                this.background.image = preload.getResult('Background' + (temp % BACKGROUND_COUNT));
+
 
             }
             // console.log(event.rawX, event.rawY);
