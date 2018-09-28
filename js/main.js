@@ -1,5 +1,12 @@
 'use strict';
 
+/*
+
+Animation idea:
+    Make the animation of grey people and then colorize when the timer starts
+
+*/
+
 var BACKGROUND_COUNT = 12;
 var temp = 1;
 

@@ -2,7 +2,6 @@
 
 class Game {
     constructor() {
-        this.Equation = '';
         this.Correct = 0;
         this.ToAdd = .1;
         this.Lives = 3;
@@ -11,7 +10,6 @@ class Game {
         this.grid;
         this.problemPoints = 999;
         this.level = levels["level1"];
-        console.log("CORRECT?", this.level);
         this.level_problems = 0;
 
         this.createScoreText();
@@ -54,26 +52,51 @@ class Game {
     }
 
     answerQuestion(answer) {
-        
+
+        // unrender for performance ofc b0sh
+        if (this.grid) {
+            this.grid.destroy();
+            this.grid = undefined;
+        } else {
+            // cannot answer question
+            return;
+        }
+
 
         // Correct Answer
         if (answer == this.correct_answer) {
-            this.score += this.problemPoints;
             this.updateScore();
+            this.score += this.problemPoints;
+            this.correctAnswerScreenScoreText.text = "+" + this.problemPoints;
+            stage.addChild(this.correctAnswerScreenText);
+            stage.addChild(this.correctAnswerScreenScoreText);
 
         // Incorrect Answer
         } else {
-            
-
+            stage.addChild(this.incorrectAnswerScreenText);    
+            stage.addChild(this.incorrectAnswerScreenScoreText);
         }
 
-        this.nextProblem();
+        stage.removeChild(this.optionOneDisplay);
+        stage.removeChild(this.optionTwoDisplay);
+        stage.removeChild(this.optionThreeDisplay);
+
+        let _this = this;
+        setTimeout(function () {
+            stage.removeChild(_this.correctAnswerScreenText);
+            stage.removeChild(_this.correctAnswerScreenScoreText);
+            stage.removeChild(_this.incorrectAnswerScreenText);
+            stage.removeChild(_this.incorrectAnswerScreenScoreText);
+
+            _this.nextProblem();
+
+            stage.addChild(_this.optionOneDisplay);
+            stage.addChild(_this.optionTwoDisplay);
+            stage.addChild(_this.optionThreeDisplay);
+        }, 2000);
     }
 
     nextProblem() {
-        // unrender for performance ofc
-        if (this.grid) 
-            this.grid.destroy();
 
         // level up!
         this.level_problems++;
@@ -172,5 +195,33 @@ class Game {
         this.optionThreeDisplay.textAlign = 'center';
         this.optionThreeDisplay.textBaseline = 'middle';      
         stage.addChild(this.optionThreeDisplay);
+
+        this.correctAnswerScreenText = new createjs.Text("~~Correct~~", "48px Roboto", "black");
+        this.correctAnswerScreenText.y = 250;
+        this.correctAnswerScreenText.x = 220;
+        this.correctAnswerScreenText.textAlign = 'center';
+        this.correctAnswerScreenText.textBaseline = 'middle';      
+        // stage.addChild(this.correctAnswerScreenText);
+
+        this.correctAnswerScreenScoreText = new createjs.Text("", "32px Roboto", "green");
+        this.correctAnswerScreenScoreText.y = 300;
+        this.correctAnswerScreenScoreText.x = 220;
+        this.correctAnswerScreenScoreText.textAlign = 'center';
+        this.correctAnswerScreenScoreText.textBaseline = 'middle';      
+        // stage.addChild(this.correctAnswerScreenScoreText);
+
+        this.incorrectAnswerScreenText = new createjs.Text("Incorrect :(", "48px Roboto", "black");
+        this.incorrectAnswerScreenText.y = 250;
+        this.incorrectAnswerScreenText.x = 220;
+        this.incorrectAnswerScreenText.textAlign = 'center';
+        this.incorrectAnswerScreenText.textBaseline = 'middle';      
+        // stage.addChild(this.incorrectAnswerScreenText);
+
+        this.incorrectAnswerScreenScoreText = new createjs.Text("-1 Life", "32px Roboto", "red");
+        this.incorrectAnswerScreenScoreText.y = 300;
+        this.incorrectAnswerScreenScoreText.x = 220;
+        this.incorrectAnswerScreenScoreText.textAlign = 'center';
+        this.incorrectAnswerScreenScoreText.textBaseline = 'middle';      
+        // stage.addChild(this.incorrectAnswerScreenScoreText);
     }
 }
