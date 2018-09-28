@@ -3,7 +3,6 @@
 class Game {
     constructor() {
         this.Correct = 0;
-        this.ToAdd = .1;
 
         this.lives = 3;
         this.score = 0;
@@ -11,6 +10,7 @@ class Game {
         this.problemPoints = 999;
         this.level = levels["level1"];
         this.level_problems = 0;
+        this.problem_active = false;
 
         this.createScoreText();
         this.initalizeGui();
@@ -19,6 +19,18 @@ class Game {
         this.updateProblemScore();
 
         this.nextProblem();
+    }
+
+    // from stage.tick
+    tick() {
+
+        // the problem is currently ticking
+        if (this.problem_active) {
+            //TODO: More interesting algorithmn
+            this.problemPoints--;
+            this.updateProblemScore();
+        }
+
     }
 
     createScoreText() {
@@ -60,23 +72,24 @@ class Game {
 
     // logic on question answered
     answerQuestion(answer) {
+        // cannot answer question
+        if (!this.problem_active)
+            return;
 
         // unrender for performance ofc b0sh
-        if (this.grid) {
-            this.grid.destroy();
-            this.grid = undefined;
-        } else {
-            // cannot answer question
-            return;
-        }
+        this.grid.destroy();
+        this.grid = undefined;
 
+        this.problem_active = false;
+        
         // Correct Answer
         if (answer == this.correct_answer) {
-            this.updateScore();
             this.score += this.problemPoints;
             this.correctAnswerScreenScoreText.text = "+" + this.problemPoints;
             stage.addChild(this.correctAnswerScreenText);
             stage.addChild(this.correctAnswerScreenScoreText);
+            
+            this.updateScore();
 
         // Incorrect Answer
         } else {
@@ -107,6 +120,9 @@ class Game {
         // setTimeout delay when unloading game (not sure if req. by the end)
         if (game_state != 'game')
             return;
+
+        // start ticking the problem points score down
+        this.problem_active = true;
 
         // level up!
         this.level_problems++;

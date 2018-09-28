@@ -8,7 +8,6 @@ var levels = {
     "level1": {
         "id": 1,
         "question_count": 5,
-        "toAdd": 0.08,
         "next_level": "level2",
         "background": "Background0",
         "generate": function () {
@@ -21,7 +20,6 @@ var levels = {
     "level2": {
         "id": 2,
         "question_count": 6,
-        "toAdd": 0.1,
         "next_level": "level3",
         "background": "Background1",
         "generate": function () {
@@ -34,7 +32,6 @@ var levels = {
     "level3": {
         "id": 3,
         "question_count": 8,
-        "toAdd": 0.1,
         "next_level": "level4",
         "background": "Background9",
         "generate": function () {
@@ -47,7 +44,6 @@ var levels = {
     "level4": {
         "id": 4,
         "question_count": 10,
-        "toAdd": 0.12,
         "next_level": "Done",
         "background": "Background7",
         "generate": function () {

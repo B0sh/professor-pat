@@ -128,6 +128,8 @@ class ProfessorPat {
     tick() {
         
         stage.update();
+        if (game)
+            game.tick();
         
     }
 
