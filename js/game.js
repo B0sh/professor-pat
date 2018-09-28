@@ -99,14 +99,14 @@ class Game {
             stage.removeChild(_this.incorrectAnswerScreenScoreText);
 
             _this.nextProblem();
-
-            stage.addChild(_this.optionOneDisplay);
-            stage.addChild(_this.optionTwoDisplay);
-            stage.addChild(_this.optionThreeDisplay);
         }, 2000);
     }
 
     nextProblem() {
+
+        // setTimeout delay when unloading game (not sure if req. by the end)
+        if (game_state != 'game')
+            return;
 
         // level up!
         this.level_problems++;
@@ -135,7 +135,41 @@ class Game {
         this.optionTwoDisplay.text   = "(2) " + this.grid.equation.choices[startGuess];
         this.optionThreeDisplay.text = "(3) " + this.grid.equation.choices[startGuess+1];
     
+        stage.addChild(this.optionOneDisplay);
+        stage.addChild(this.optionTwoDisplay);
+        stage.addChild(this.optionThreeDisplay);
         // Game.StartScoreTimer(995);
+    }
+
+    // return to main menu
+    end() {
+        this.destroy();
+
+    }
+
+    // I don't know a better way to do this... 
+    // not researching now though
+    destroy() {
+        if (this.grid) 
+            this.grid.destroy();
+
+        stage.removeChild(this.levelText);
+        stage.removeChild(this.tagLineText);
+        stage.removeChild(this.scoreText);
+        stage.removeChild(this.livesText);
+        for (let l = 0; l < 3; l++)
+            stage.removeChild(this.lifeDispays[l]);
+        stage.removeChild(this.problemScoreText);
+        stage.removeChild(this.problemScoreDisplayOutline);
+        stage.removeChild(this.problemScoreDisplay);
+        stage.removeChild(this.optionOneDisplay);
+        stage.removeChild(this.optionTwoDisplay);
+        stage.removeChild(this.optionThreeDisplay);
+        stage.removeChild(this.correctAnswerScreenText);
+        stage.removeChild(this.correctAnswerScreenScoreText);
+        stage.removeChild(this.incorrectAnswerScreenText);
+        stage.removeChild(this.incorrectAnswerScreenScoreText);
+        
     }
 
     initalizeGui() {
@@ -210,21 +244,21 @@ class Game {
         this.optionOneDisplay.textAlign = 'center';
         this.optionOneDisplay.textBaseline = 'middle';      
         // this.optionOneDisplay.shadow = new createjs.Shadow("#333", 1, 1, 0);
-        stage.addChild(this.optionOneDisplay);
+        // stage.addChild(this.optionOneDisplay);
 
         this.optionTwoDisplay = new createjs.Text("", "32px Roboto", "black");
         this.optionTwoDisplay.y = 250;
         this.optionTwoDisplay.x = 550;
         this.optionTwoDisplay.textAlign = 'center';
         this.optionTwoDisplay.textBaseline = 'middle';      
-        stage.addChild(this.optionTwoDisplay);
+        // stage.addChild(this.optionTwoDisplay);
 
         this.optionThreeDisplay = new createjs.Text("", "32px Roboto", "black");
         this.optionThreeDisplay.y = 300;
         this.optionThreeDisplay.x = 550;
         this.optionThreeDisplay.textAlign = 'center';
         this.optionThreeDisplay.textBaseline = 'middle';      
-        stage.addChild(this.optionThreeDisplay);
+        // stage.addChild(this.optionThreeDisplay);
 
         this.correctAnswerScreenText = new createjs.Text("~~Correct~~", "48px Roboto", "black");
         this.correctAnswerScreenText.y = 250;

@@ -35,7 +35,7 @@ class ProfessorPat {
         preload.on("complete", this.handleComplete, this);
 
         let manifest = [
-            { id: "Background", src:   "images/background2.png" },
+            { id: "MenuBackground", src:   "images/background2.png" },
             { id: "GameBackground", src:   "images/background0.png" },
             { id: "Menu", src:   "images/shit menu.png" },
             { id: "RedPerson", src:   "images/person-red.png" },
@@ -132,12 +132,31 @@ class ProfessorPat {
     }
 
     startGame() {
-        // alert("Start Game");
 
-        game = new Game();
+        // cannot create game if game is already started
+        if (game_state != 'menu') 
+            return;
+
         game_state = 'game';
+        game = new Game();
 
         this.unloadMainMenu();
+
+    }
+
+    endGame() {
+        // cannot end game if it is not started
+        if (game_state != 'game') 
+            return;
+
+        game.destroy();
+        game = undefined;
+        
+        // for now this is ok... 
+        game_state = 'menu';
+        stage.addChild(this.menu_text);
+        this.background.image = preload.getResult('MenuBackground');
+        
     }
 
     unloadMainMenu() {
@@ -147,7 +166,7 @@ class ProfessorPat {
     
     createMainMenu() {
         
-        this.background = new createjs.Bitmap(preload.getResult('Background'));
+        this.background = new createjs.Bitmap(preload.getResult('MenuBackground'));
 
         // this.background = new createjs.Shape();
         // this.background.graphics.beginFill('#CFFAA5');
@@ -179,6 +198,7 @@ function keyDownHandler (event) {
         // console.log(event.keyCode, pat.game_state);
         if (game_state == 'game') {
             switch (event.keyCode) {
+                case 27: pat.endGame(); break;
                 case 49: game.answerQuestion(1); break; // 1
                 case 50: game.answerQuestion(2); break; // 2
                 case 51: game.answerQuestion(3); break; // 3
