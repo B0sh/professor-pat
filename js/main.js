@@ -74,6 +74,7 @@ class ProfessorPat {
         
         createjs.Touch.enable(stage);
         
+        //TODO: Upgrade to 60
         createjs.Ticker.setFPS(30);
         createjs.Ticker.addEventListener("tick", this.tick);
         
@@ -82,8 +83,6 @@ class ProfessorPat {
         // stage.on("stagemousemove", function(event) {
         // //   paddle.x = stage.mouseX;
         // });
-    
-
 
         // fuck it global scope keyboard handling. get this game out!
         window.onkeyup = keyUpHandler;
@@ -168,22 +167,26 @@ class ProfessorPat {
     
     createMainMenu() {
         
-        this.background = new createjs.Bitmap(preload.getResult('MenuBackground'));
-
         // this.background = new createjs.Shape();
         // this.background.graphics.beginFill('#CFFAA5');
         // this.background.graphics.drawRect(0, 0, 135135, 151351355);
         // this.background.graphics.endFill();
 
+        this.background = new createjs.Bitmap(preload.getResult('MenuBackground'));
         this.background.x = 0;
         this.background.y = 0;
-    
         stage.addChild(this.background);
+
+        // used to do a fade animation in the correct location in the stack
+        this.background_fade = new createjs.Bitmap(preload.getResult('GameBackground'));
+        this.background_fade.x = 0;
+        this.background_fade.y = 0;
+        this.background_fade.alpha = 0;
+        stage.addChild(this.background_fade);
 
         this.menu_text = new createjs.Bitmap(preload.getResult('Menu'));
         this.menu_text.x = 0;
         this.menu_text.y = 0;
-    
         stage.addChild(this.menu_text);
     }
 }

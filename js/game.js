@@ -2,17 +2,17 @@
 
 class Game {
     constructor() {
-        this.Correct = 0;
 
         this.lives = 3;
         this.score = 0;
+        this.problems_correct = 0;
         this.grid;
         this.problemPoints = 999;
         this.level = levels["level1"];
         this.level_problems = 0;
+
         this.problem_active = false;
 
-        this.createScoreText();
         this.initalizeGui();
 
         this.updateLives();
@@ -23,21 +23,12 @@ class Game {
 
     // from stage.tick
     tick() {
-
         // the problem is currently ticking
         if (this.problem_active) {
             //TODO: More interesting algorithmn
             this.problemPoints--;
             this.updateProblemScore();
         }
-
-    }
-
-    createScoreText() {
-        this.scoreText = new createjs.Text("", "18px Arial", "black");
-        this.scoreText.y = stage.canvas.height - 30+1000;
-        this.scoreText.x = 15;
-        stage.addChild(this.scoreText);
     }
 
     updateProblemScore() {
@@ -86,6 +77,7 @@ class Game {
         if (answer == this.correct_answer) {
             this.score += this.problemPoints;
             this.correctAnswerScreenScoreText.text = "+" + this.problemPoints;
+            this.problems_correct++;
             stage.addChild(this.correctAnswerScreenText);
             stage.addChild(this.correctAnswerScreenScoreText);
             
@@ -115,24 +107,49 @@ class Game {
         }, 2000);
     }
 
+    // advance to next level and perform various level animations
+    nextLevel() {
+        this.level_problems = 0;
+        this.level = levels[this.level.next_level];
+        this.levelText.text = "Level " + this.level.id;
+
+        this.levelUpScreenText = new createjs.Text("Level Up!", "48px Roboto", "black");
+        this.levelUpScreenText.y = 250;
+        this.levelUpScreenText.x = -100;
+        this.levelUpScreenText.textAlign = 'center';
+        this.levelUpScreenText.textBaseline = 'middle'; 
+        stage.addChild(this.levelUpScreenText); 
+
+        pat.background_fade.image = preload.getResult(this.level.background);
+
+        createjs.Tween.get(pat.background_fade).to({ alpha: 1 }, 4900);
+        createjs.Tween.get(this.levelUpScreenText).to({ x: 700 }, 4900 );
+
+        let _this = this;
+        setTimeout(function () {
+            pat.background.image = preload.getResult(_this.level.background);
+            pat.background_fade.alpha = 0;
+    
+            _this.nextProblem();
+            stage.removeChild(_this.levelUpScreenText);
+        }, 5000);
+    }
+
     nextProblem() {
 
         // setTimeout delay when unloading game (not sure if req. by the end)
         if (game_state != 'game')
             return;
 
-        // start ticking the problem points score down
-        this.problem_active = true;
-
         // level up!
         this.level_problems++;
         if (this.level_problems > this.level.question_count) {
-            this.level_problems = 0;
-            this.level = levels[this.level.next_level];
-            this.levelText.text = "Level " + this.level.id;
-
-            pat.background.image = preload.getResult(this.level.background);
+            this.nextLevel();
+            return; // stop the sequence for level up screen
         }
+        
+        // start ticking the problem points score down
+        this.problem_active = true;
 
         this.grid = this.level.generate();
         this.grid.render();
@@ -154,13 +171,11 @@ class Game {
         stage.addChild(this.optionOneDisplay);
         stage.addChild(this.optionTwoDisplay);
         stage.addChild(this.optionThreeDisplay);
-        // Game.StartScoreTimer(995);
     }
 
     // return to main menu
     end() {
         this.destroy();
-
     }
 
     // I don't know a better way to do this... 
