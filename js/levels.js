@@ -10,6 +10,7 @@ var levels = {
         "question_count": 5,
         "toAdd": 0.08,
         "next_level": "level2",
+        "background": "Background0",
         "generate": function () {
             
             return new Grid(11, 11, 
@@ -22,6 +23,7 @@ var levels = {
         "question_count": 6,
         "toAdd": 0.1,
         "next_level": "level3",
+        "background": "Background1",
         "generate": function () {
 
             return new Grid(getRandomInt(10, 11), getRandomInt(9, 10),
@@ -34,6 +36,7 @@ var levels = {
         "question_count": 8,
         "toAdd": 0.1,
         "next_level": "level4",
+        "background": "Background9",
         "generate": function () {
 
             return new Grid(getRandomInt(4, 7), getRandomInt(4, 7),
@@ -46,6 +49,7 @@ var levels = {
         "question_count": 10,
         "toAdd": 0.12,
         "next_level": "Done",
+        "background": "Background7",
         "generate": function () {
             
             return new Grid(12, 10,

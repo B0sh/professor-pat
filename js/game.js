@@ -4,10 +4,10 @@ class Game {
     constructor() {
         this.Equation = '';
         this.Correct = 0;
-        this.Score = 0;
         this.ToAdd = .1;
         this.Lives = 3;
-
+        
+        this.score = 0;
         this.grid;
         this.problemPoints = 999;
         this.level = levels["level1"];
@@ -18,7 +18,7 @@ class Game {
         this.initalizeGui();
 
         // this.updateLives();
-        this.updateScore();
+        this.updateProblemScore();
 
         this.nextProblem();
     }
@@ -30,7 +30,7 @@ class Game {
         stage.addChild(this.scoreText);
     }
 
-    updateScore() {
+    updateProblemScore() {
         this.problemScoreDisplay.text = "+" + this.problemPoints;
         this.problemScoreDisplayOutline.text = "+" + this.problemPoints;
 
@@ -48,6 +48,28 @@ class Game {
         }
     }
 
+    updateScore() {
+        // maybe can do some kind of animation here
+        this.scoreText.text = "Score: " + this.score;
+    }
+
+    answerQuestion(answer) {
+        
+
+        // Correct Answer
+        if (answer == this.correct_answer) {
+            this.score += this.problemPoints;
+            this.updateScore();
+
+        // Incorrect Answer
+        } else {
+            
+
+        }
+
+        this.nextProblem();
+    }
+
     nextProblem() {
         // unrender for performance ofc
         if (this.grid) 
@@ -59,26 +81,26 @@ class Game {
             this.level_problems = 0;
             this.level = levels[this.level.next_level];
             this.levelText.text = "Level " + this.level.id;
+
+            pat.background.image = preload.getResult(this.level.background);
         }
 
         this.grid = this.level.generate();
         this.grid.render();
+
         console.log(this.grid);
 
-        var startGuess = getRandomInt(1, 3);
+        // ranodmly choose a thing to guess 
+        let startGuess = getRandomInt(1, 3);
         switch (startGuess) {
-            case 1: Game.Answer = 3; break;
-            case 2: Game.Answer = 2; break;
-            case 3: Game.Answer = 1; break;
+            case 1: this.correct_answer = 3; break;
+            case 2: this.correct_answer = 2; break;
+            case 3: this.correct_answer = 1; break;
         }
-    
-        // $("#guess_1").html("(1) "+Game.Equation.choices[startGuess-1]);
-        // $("#guess_2").html("(2) " + Game.Equation.choices[startGuess]);
-        // $("#guess_3").html("(3) " + Game.Equation.choices[startGuess+1]);
-    
-        // $('.total_levels').html(Game.GetLevel());
-    
-        // Grid.Populate();
+
+        this.optionOneDisplay.text   = "(1) " + this.grid.equation.choices[startGuess-1];
+        this.optionTwoDisplay.text   = "(2) " + this.grid.equation.choices[startGuess];
+        this.optionThreeDisplay.text = "(3) " + this.grid.equation.choices[startGuess+1];
     
         // Game.StartScoreTimer(995);
     }
@@ -89,6 +111,7 @@ class Game {
         this.levelText.y = 20;
         this.levelText.x = 20;
         this.levelText.text = "Level 1";
+        this.levelText.shadow = new createjs.Shadow("#666", 1, 1, 0);
         stage.addChild(this.levelText);
 
         this.tagLineText = new createjs.Text("", "italic 16px Roboto", "#333");
@@ -96,6 +119,14 @@ class Game {
         this.tagLineText.x = 40;
         this.tagLineText.text = "What's the pattern, Professor Pat?";
         stage.addChild(this.tagLineText);
+
+        this.scoreText = new createjs.Text("", "24px Roboto", "black");
+        this.scoreText.y = 400;
+        this.scoreText.x = 550;
+        this.scoreText.text = "Score: 0";
+        this.scoreText.textAlign = 'center';
+        this.scoreText.textBaseline = 'middle';    
+        stage.addChild(this.scoreText);
 
         this.problemScoreText = new createjs.Text("", "24px Roboto", "#333");
         this.problemScoreText.y = 65;
@@ -120,7 +151,26 @@ class Game {
         this.problemScoreDisplay.textBaseline = 'middle';      
         stage.addChild(this.problemScoreDisplay);
 
+        this.optionOneDisplay = new createjs.Text("", "32px Roboto", "black");
+        this.optionOneDisplay.y = 200;
+        this.optionOneDisplay.x = 550;
+        this.optionOneDisplay.textAlign = 'center';
+        this.optionOneDisplay.textBaseline = 'middle';      
+        // this.optionOneDisplay.shadow = new createjs.Shadow("#333", 1, 1, 0);
+        stage.addChild(this.optionOneDisplay);
+
+        this.optionTwoDisplay = new createjs.Text("", "32px Roboto", "black");
+        this.optionTwoDisplay.y = 250;
+        this.optionTwoDisplay.x = 550;
+        this.optionTwoDisplay.textAlign = 'center';
+        this.optionTwoDisplay.textBaseline = 'middle';      
+        stage.addChild(this.optionTwoDisplay);
+
+        this.optionThreeDisplay = new createjs.Text("", "32px Roboto", "black");
+        this.optionThreeDisplay.y = 300;
+        this.optionThreeDisplay.x = 550;
+        this.optionThreeDisplay.textAlign = 'center';
+        this.optionThreeDisplay.textBaseline = 'middle';      
+        stage.addChild(this.optionThreeDisplay);
     }
-
-
 }

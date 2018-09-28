@@ -41,6 +41,11 @@ class Grid {
     }
   }
 
+  setAnswer(correct_answer) { 
+
+
+  }
+
   destroy() {
     for (let i = 0; i < this.tiles.length; i++) 
     {
@@ -74,7 +79,7 @@ class Grid {
     let spritesheet = new createjs.SpriteSheet(data);
     let animation = new createjs.Sprite(spritesheet, "idle");
 
-    animation.rotation = getRandomInt(-45, 45);
+    // animation.rotation = getRandomInt(-45, 45);
 
 
     animation.x = 25 + 34 * (x) ;

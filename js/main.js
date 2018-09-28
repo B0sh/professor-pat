@@ -1,6 +1,6 @@
 'use strict';
 
-var BACKGROUND_COUNT = 15;
+var BACKGROUND_COUNT = 12;
 var temp = 1;
 
 var stage;
@@ -61,7 +61,8 @@ class ProfessorPat {
     handleFileProgress(event) {
         console.log("Progress: " + preload.progress*100 + "%");
     }
-  
+
+
     handleComplete(event) {
         
         createjs.Touch.enable(stage);
@@ -75,6 +76,12 @@ class ProfessorPat {
         // //   paddle.x = stage.mouseX;
         // });
     
+
+
+        // fuck it global scope keyboard handling. get this game out!
+        window.onkeyup = keyUpHandler;
+        window.onkeydown = keyDownHandler;
+
         // console.log(this);
         stage.on("stagemousedown", function(event) {
             // console.log(this);
@@ -92,11 +99,11 @@ class ProfessorPat {
 
             } else {
 
-                game.nextProblem();
-                let rand = getRandomInt(1, 9);
-                temp++;
-                console.log(temp);
-                this.background.image = preload.getResult('Background' + (temp % BACKGROUND_COUNT));
+                // game.nextProblem();
+                // let rand = getRandomInt(1, 9);
+                // temp++;
+                // console.log(temp);
+                // this.background.image = preload.getResult('Background' + (temp % BACKGROUND_COUNT));
 
 
             }
@@ -133,7 +140,6 @@ class ProfessorPat {
     
     createMainMenu() {
         
-        console.log("create main menu");
         this.background = new createjs.Bitmap(preload.getResult('Background'));
 
         // this.background = new createjs.Shape();
@@ -141,29 +147,41 @@ class ProfessorPat {
         // this.background.graphics.drawRect(0, 0, 135135, 151351355);
         // this.background.graphics.endFill();
 
-        this.background.regX = 0;
-        this.background.regY = 0;
-        this.background.scaleX = 1;
-        this.background.scaleY = 1;
         this.background.x = 0;
         this.background.y = 0;
     
         stage.addChild(this.background);
 
         this.menu_text = new createjs.Bitmap(preload.getResult('Menu'));
-
-        this.menu_text.regX = 0;
-        this.menu_text.regY = 0;
-        this.menu_text.scaleX = 1;
-        this.menu_text.scaleY = 1;
         this.menu_text.x = 0;
         this.menu_text.y = 0;
     
         stage.addChild(this.menu_text);
-        return true;
     }
 }
 
+var pressed_keys = [];
+function keyUpHandler(event) {
+    const index = pressed_keys.indexOf(event.keyCode);
+    pressed_keys.splice(index, 1);
+};
+
+function keyDownHandler (event) {
+    if (pressed_keys.indexOf(event.keyCode) == -1) {
+        pressed_keys.push(event.keyCode);
+        // console.log(event.keyCode, pat.game_state);
+        if (game_state == 'game') {
+            switch (event.keyCode) {
+                case 49: game.answerQuestion(1); break; // 1
+                case 50: game.answerQuestion(2); break; // 2
+                case 51: game.answerQuestion(3); break; // 3
+                case 32:  break; // space
+            }
+        }
+        // console.log(event);
+
+    }
+};
 
 
 
