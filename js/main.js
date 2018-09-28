@@ -43,7 +43,7 @@ class ProfessorPat {
             { id: "OrangePerson", src:   "images/person-orange.png" },
             { id: "PurplePerson", src:   "images/person-purple.png" },
             { id: "GreenPerson", src:   "images/person-green.png" },
-            // { id: "F", src:   "f.png" },
+            { id: "Life", src:   "images/heart.png" },
         ];
 
         for (let i  = 0; i < BACKGROUND_COUNT; i++) {

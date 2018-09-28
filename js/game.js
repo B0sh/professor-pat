@@ -4,8 +4,8 @@ class Game {
     constructor() {
         this.Correct = 0;
         this.ToAdd = .1;
-        this.Lives = 3;
-        
+
+        this.lives = 3;
         this.score = 0;
         this.grid;
         this.problemPoints = 999;
@@ -15,7 +15,7 @@ class Game {
         this.createScoreText();
         this.initalizeGui();
 
-        // this.updateLives();
+        this.updateLives();
         this.updateProblemScore();
 
         this.nextProblem();
@@ -47,10 +47,18 @@ class Game {
     }
 
     updateScore() {
-        // maybe can do some kind of animation here
+        // maybe can do some kind of flash animation here
         this.scoreText.text = "Score: " + this.score;
     }
 
+    updateLives() {
+        // maybe can do some kind of flash animation here
+        for (let l = 3; l > this.lives; l--) {
+            stage.removeChild(this.lifeDispays[l - 1]);
+        }
+    }
+
+    // logic on question answered
     answerQuestion(answer) {
 
         // unrender for performance ofc b0sh
@@ -62,7 +70,6 @@ class Game {
             return;
         }
 
-
         // Correct Answer
         if (answer == this.correct_answer) {
             this.updateScore();
@@ -73,6 +80,8 @@ class Game {
 
         // Incorrect Answer
         } else {
+            this.lives --;
+            this.updateLives();
             stage.addChild(this.incorrectAnswerScreenText);    
             stage.addChild(this.incorrectAnswerScreenScoreText);
         }
@@ -81,6 +90,7 @@ class Game {
         stage.removeChild(this.optionTwoDisplay);
         stage.removeChild(this.optionThreeDisplay);
 
+        // start the problem again
         let _this = this;
         setTimeout(function () {
             stage.removeChild(_this.correctAnswerScreenText);
@@ -144,12 +154,32 @@ class Game {
         stage.addChild(this.tagLineText);
 
         this.scoreText = new createjs.Text("", "24px Roboto", "black");
-        this.scoreText.y = 400;
+        this.scoreText.y = 375;
         this.scoreText.x = 550;
         this.scoreText.text = "Score: 0";
         this.scoreText.textAlign = 'center';
         this.scoreText.textBaseline = 'middle';    
         stage.addChild(this.scoreText);
+
+        this.livesText = new createjs.Text("Lives:", "24px Roboto", "black");
+        this.livesText.y = 400;
+        this.livesText.x = 550;
+        this.livesText.textAlign = 'center';
+        this.livesText.textBaseline = 'middle';    
+        stage.addChild(this.livesText);
+
+        // lifes sare complicated
+        this.lifeDispays = [];
+        for (let l = 0; l < 3; l++) {
+            let life = new createjs.Bitmap(preload.getResult('Life'));
+            life.y = 410;
+            life.x = 498 + 40 * l;
+            life.scaleX = 0.0410;
+            life.scaleY = 0.041;
+            this.lifeDispays.push(life);
+            stage.addChild(this.lifeDispays[l]);
+            
+        }
 
         this.problemScoreText = new createjs.Text("", "24px Roboto", "#333");
         this.problemScoreText.y = 65;
