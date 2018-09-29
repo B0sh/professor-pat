@@ -250,7 +250,8 @@ class Game {
         stage.removeChild(this.incorrectAnswerScreenText);
         stage.removeChild(this.incorrectAnswerScreenScoreText);
         stage.removeChild(this.gameOverText);
-        stage.removeChild(this.gameOverText2);
+        stage.removeChild(this.gameOverPressSpace);
+        stage.removeChild(this.gameOverReasonText);
         stage.removeChild(this.winOverText);
         stage.removeChild(this.winOverText2);
         
@@ -301,13 +302,25 @@ class Game {
         this.gameOverText.textBaseline = 'middle';    
         stage.addChild(this.gameOverText);
 
-        this.gameOverText2 = new createjs.Text("", "italic 20px Roboto", "#444");
-        this.gameOverText2.y = 340;
-        this.gameOverText2.x = WIDTH/2;
-        this.gameOverText2.text = "Press space to go back to the main menu i guess";
-        this.gameOverText2.textAlign = 'center';
-        this.gameOverText2.textBaseline = 'middle';    
-        stage.addChild(this.gameOverText2);
+        this.gameOverReasonText = new createjs.Text("You died IRL", "italic 20px Roboto", "#222");
+        if (this.lives == 0) 
+            this.gameOverReasonText.text = "You ran out of lives";
+        if (this.problemPoints == 0)
+            this.gameOverReasonText.text = "You ran out of problem points (TODO how to communicate this)";
+
+        this.gameOverReasonText.y = 330;
+        this.gameOverReasonText.x = WIDTH/2;
+        this.gameOverReasonText.textAlign = 'center';
+        this.gameOverReasonText.textBaseline = 'middle';    
+        stage.addChild(this.gameOverReasonText);
+
+        this.gameOverPressSpace = new createjs.Text("", "italic 20px Roboto", "#444");
+        this.gameOverPressSpace.y = 360;
+        this.gameOverPressSpace.x = WIDTH/2;
+        this.gameOverPressSpace.text = "Press space to go back to the main menu i guess";
+        this.gameOverPressSpace.textAlign = 'center';
+        this.gameOverPressSpace.textBaseline = 'middle';    
+        stage.addChild(this.gameOverPressSpace);
     }
 
 
@@ -357,10 +370,9 @@ class Game {
 
     initalizeGui() {
         let levelTextFont = 40;
-        this.levelText = new createjs.Text("", levelTextFont + "px Roboto", "black");
+        this.levelText = new createjs.Text("Level 1", levelTextFont + "px Roboto", "black");
         this.levelText.y = 20;
         this.levelText.x = 20;
-        this.levelText.text = "Level 1";
         this.levelText.shadow = new createjs.Shadow("#666", 1, 1, 0);
         stage.addChild(this.levelText);
 
@@ -370,10 +382,9 @@ class Game {
         this.tagLineText.text = "What's the pattern, Professor Pat?";
         stage.addChild(this.tagLineText);
 
-        this.scoreText = new createjs.Text("", "24px Roboto", "black");
+        this.scoreText = new createjs.Text("Score: 0", "24px Roboto", "black");
         this.scoreText.y = 375;
         this.scoreText.x = 550;
-        this.scoreText.text = "Score: 0";
         this.scoreText.textAlign = 'center';
         this.scoreText.textBaseline = 'middle';    
         stage.addChild(this.scoreText);
