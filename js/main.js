@@ -198,8 +198,9 @@ class ProfessorPat {
         // for now this is ok... 
         game_state = 'menu';
         stage.addChild(this.menu_text);
-        stage.removeChild(pat.background_fade);
+
         this.background.image = preload.getResult('MenuBackground');
+        this.background_fade.alpha = 0;
     
     }
 

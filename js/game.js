@@ -171,17 +171,25 @@ class Game {
 
         pat.background_fade.image = preload.getResult(this.level.background);
 
-        createjs.Tween.get(pat.background_fade).to({ alpha: 1 }, 4900);
-        createjs.Tween.get(this.levelUpScreenText).to({ x: 900 }, 4900 );
+        createjs.Tween
+            .get(pat.background_fade)
+            .to({ alpha: 1 }, 4900)
+            .call(function (object) {
+                alert("SHIT");
 
-        let _this = this;
-        setTimeout(function () {
-            pat.background.image = preload.getResult(_this.level.background);
-            pat.background_fade.alpha = 0;
-    
-            _this.nextProblem();
-            stage.removeChild(_this.levelUpScreenText);
-        }, 5000);
+                pat.background.image = preload.getResult(this.level.background);
+                pat.background_fade.alpha = 0;
+
+                this.nextProblem();
+                stage.removeChild(this.levelUpScreenText);
+            }, [], this);
+            
+        createjs.Tween
+            .get(this.levelUpScreenText)
+            .to({ x: 900 }, 4900 )
+            .call(function (object) {
+            }, [], this);
+
     }
 
     nextProblem() {
@@ -233,6 +241,13 @@ class Game {
         if (this.grid) 
             this.grid.destroy();
 
+        // unset animations properties (and their callbacks)
+        if (this.levelUpScreenText)
+            createjs.Tween.removeTweens(this.levelUpScreenText);
+        if (this.scoreText)
+            createjs.Tween.removeTweens(this.scoreText);
+        createjs.Tween.removeTweens(pat.background_fade);
+
         stage.removeChild(this.levelText);
         stage.removeChild(this.tagLineText);
         stage.removeChild(this.scoreText);
@@ -245,6 +260,7 @@ class Game {
         stage.removeChild(this.optionOneDisplay);
         stage.removeChild(this.optionTwoDisplay);
         stage.removeChild(this.optionThreeDisplay);
+        stage.removeChild(this.levelUpScreenText);
         stage.removeChild(this.correctAnswerScreenText);
         stage.removeChild(this.correctAnswerScreenScoreText);
         stage.removeChild(this.incorrectAnswerScreenText);
@@ -283,15 +299,13 @@ class Game {
 
         pat.background_fade.image = preload.getResult("GameOverBackground");
 
-        createjs.Tween.get(pat.background_fade).to({ alpha: 1 }, 1500);
-        setTimeout(function () {
-            if (game_state != 'game')
-                return;
-                
-            pat.background.image = preload.getResult("GameOverBackground");
-            pat.background_fade.alpha = 0;
-            stage.removeChild(pat.background_fade);
-        }, 1500);
+        createjs.Tween
+            .get(pat.background_fade)
+            .to({ alpha: 1 }, 1500)
+            .call(function () {
+                pat.background.image = preload.getResult("GameOverBackground");
+                pat.background_fade.alpha = 0;
+            }, [], this);
 
         // TODO: Maybe add an image here
         this.gameOverText = new createjs.Text("", "48px Roboto", "black");
@@ -340,15 +354,13 @@ class Game {
 
         pat.background_fade.image = preload.getResult("WinOverBackground");
 
-        createjs.Tween.get(pat.background_fade).to({ alpha: 1 }, 1500);
-        setTimeout(function () {
-            if (game_state != 'game')
-                return;
-                
-            pat.background.image = preload.getResult("WinOverBackground");
-            pat.background_fade.alpha = 0;
-            stage.removeChild(pat.background_fade);
-        }, 1500);
+        createjs.Tween
+            .get(pat.background_fade)
+            .to({ alpha: 1 }, 1500)
+            .call(function () {
+                pat.background.image = preload.getResult("WinOverBackground");
+                pat.background_fade.alpha = 0;
+            }, [], this);
 
         // TODO: Maybe add an image here
         this.winOverText = new createjs.Text("", "48px Roboto", "black");
