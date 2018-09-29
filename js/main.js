@@ -38,6 +38,7 @@ class ProfessorPat {
             { id: "MenuBackground", src:   "images/background2.png" },
             { id: "GameBackground", src:   "images/background0.png" },
             { id: "GameOverBackground", src:   "images/background10.png" },
+            { id: "WinOverBackground", src:   "images/background4.png" },
             { id: "Menu", src:   "images/shit menu.png" },
             { id: "RedPerson", src:   "images/person-red.png" },
             { id: "YellowPerson", src:   "images/person-yellow.png" },

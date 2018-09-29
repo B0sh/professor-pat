@@ -33,6 +33,10 @@ class Game {
         if (this.problem_active) {
             //TODO: More interesting algorithmn
             this.problemPoints--;
+            if (this.problemPoints == 0) {
+                this.problem_active = false;
+                this.gameOver();
+            }
             this.updateProblemScore();
         }
     }
@@ -127,6 +131,11 @@ class Game {
 
         this.level_problems = 0;
         this.level = levels[this.level.next_level];
+        if (this.level.victory) {
+            this.winOver();
+            return;
+        }
+
         this.levelText.text = "Level " + this.level.id;
 
         this.levelUpScreenText = new createjs.Text("Level Up!", "48px Roboto", "black");
@@ -218,11 +227,17 @@ class Game {
         stage.removeChild(this.incorrectAnswerScreenScoreText);
         stage.removeChild(this.gameOverText);
         stage.removeChild(this.gameOverText2);
+        stage.removeChild(this.winOverText);
+        stage.removeChild(this.winOverText2);
         
     }
 
     hasEnded() {
         if (this.lives == 0)
+            return true;
+        if (this.level.victory)
+            return true;
+        if (this.problemPoints == 0)
             return true;
         return false;
     }
@@ -269,6 +284,51 @@ class Game {
         this.gameOverText2.textAlign = 'center';
         this.gameOverText2.textBaseline = 'middle';    
         stage.addChild(this.gameOverText2);
+    }
+
+
+    winOver() {
+        this.destroy();
+        stage.addChild(this.levelText);
+        stage.addChild(this.tagLineText);
+        stage.addChild(this.scoreText);
+
+        // move the score to the center... cool?
+        createjs.Tween.get(this.scoreText).to({ 
+            x: 720/2, 
+            y: 280,
+            scaleX: 1.5,
+            scaleY: 1.5
+        }, 1500);
+
+        pat.background_fade.image = preload.getResult("WinOverBackground");
+
+        createjs.Tween.get(pat.background_fade).to({ alpha: 1 }, 1500);
+        setTimeout(function () {
+            if (game_state != 'game')
+                return;
+                
+            pat.background.image = preload.getResult("WinOverBackground");
+            pat.background_fade.alpha = 0;
+            stage.removeChild(pat.background_fade);
+        }, 1500);
+
+        // TODO: Maybe add an image here
+        this.winOverText = new createjs.Text("", "48px Roboto", "black");
+        this.winOverText.y = 220;
+        this.winOverText.x = 720/2;
+        this.winOverText.text = "Victory, Professor Pat!";
+        this.winOverText.textAlign = 'center';
+        this.winOverText.textBaseline = 'middle';    
+        stage.addChild(this.winOverText);
+
+        this.winOverText2 = new createjs.Text("", "italic 20px Roboto", "#444");
+        this.winOverText2.y = 340;
+        this.winOverText2.x = 720/2;
+        this.winOverText2.text = "Press space to go back to the main menu i guess";
+        this.winOverText2.textAlign = 'center';
+        this.winOverText2.textBaseline = 'middle';    
+        stage.addChild(this.winOverText2);
     }
 
     initalizeGui() {

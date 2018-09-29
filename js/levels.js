@@ -53,4 +53,8 @@ var levels = {
             
         },
     },
+    "Done": {
+        "id": "Done",
+        "victory": true,
+    }
 };
