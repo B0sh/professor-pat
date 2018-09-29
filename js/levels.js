@@ -1,9 +1,22 @@
 'use strict'; 
 
-// level.generate() needs to return some set of properties
-// call generate AT every new map creation
+/* * * * * * * HOW TO MAKE LEVELS * * * * * * * * 
+ * first 2 arguments of Grid() are grid size (11x12 max)
+ * 
+ * Then there's the animation properties
+ * leave them out if does not apply. you can use multiple at once
+ * {
+ *   "rotation": randomly rotates things to +-input
+ *   "colors": animates the accent color throughout the 
+ *        grid in a direction (up down left right)
+ * }
+ * 
+ * Last propety is the equation generator
+ *   "single" is Every x
+ *   "double" is Every x, x
+ * The .generate() input is the max and min of the equation's Every x
+ * * * * * * * * * * * * * * * * * * * * * * * * */
 
-// 11x11 is the max number
 var levels = {
     "level1": {
         "id": 1,
@@ -13,8 +26,9 @@ var levels = {
         "generate": function () {
             
             return new Grid(11, 11, 
+                { },    
                 // { rotation: 30 },
-                { colors: "right" },
+                // { colors: "right", rotation: 30 },
                 equations["single"].generate([3, 6]));
 
         },
