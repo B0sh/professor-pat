@@ -13,6 +13,8 @@ var levels = {
         "generate": function () {
             
             return new Grid(11, 11, 
+                // { rotation: 30 },
+                { colors: "right" },
                 equations["single"].generate([3, 6]));
 
         },
@@ -24,7 +26,8 @@ var levels = {
         "background": "Background1",
         "generate": function () {
 
-            return new Grid(getRandomInt(10, 11), getRandomInt(9, 10),
+            return new Grid(getRandomInt(10, 11), getRandomInt(9, 10), 
+                { },
                 equations["single"].generate([3, 9]));
             
         },
@@ -37,6 +40,7 @@ var levels = {
         "generate": function () {
 
             return new Grid(getRandomInt(4, 7), getRandomInt(4, 7),
+                { },
                 equations["single"].generate([3, 9]));
 
         },
@@ -49,6 +53,7 @@ var levels = {
         "generate": function () {
             
             return new Grid(12, 10,
+                { },
                 equations["double"].generate([3, 9]));
             
         },

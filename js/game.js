@@ -10,6 +10,7 @@ class Game {
         this.problemPoints = 999;
         this.level = levels["level1"];
         this.level_problems = 0;
+        this.ticks = 0;
 
         this.problemPointsColorRange = [
             { color: '#88FF88', num: 800 },
@@ -29,6 +30,7 @@ class Game {
 
     // from stage.tick
     tick() {
+        this.ticks++;
         // the problem is currently ticking
         if (this.problem_active) {
             //TODO: More interesting algorithmn
@@ -38,6 +40,28 @@ class Game {
                 this.gameOver();
             }
             this.updateProblemScore();
+        }
+
+        if (this.problem_active && this.grid && this.grid.props.colors) {
+            if (this.ticks % 10 == 0) {
+                // THANK FUCK YOU CAN JUST ADD TO THE OFFSET!!!!
+                switch (this.grid.props.colors) {
+                    case 'down':
+                        this.grid.equation.offset++;
+                        break;
+                    case 'left':
+                        this.grid.equation.offset--;
+                        break;
+                    case 'up':
+                        this.grid.equation.offset += this.grid.tile_width - 1;
+                        break;
+                    case 'right':
+                        this.grid.equation.offset -= this.grid.tile_width - 1;
+                        break;
+                }
+                this.grid.destroy();
+                this.grid.render();
+            }
         }
     }
 

@@ -52,7 +52,7 @@ var equations = {
       this.inPattern = [];
       
       let q = 0, n = 0;
-      for (let y = 1; y <= 2500; y++) {
+      for (let y = -200; y <= 2500; y++) {
         q++;
         if (q == this.number[n]) {
           this.inPattern.push(y);

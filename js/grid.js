@@ -2,9 +2,10 @@
 
 class Grid {
   // tile_width refers to number of tiles across
-  constructor(tile_width, tile_height, equation) {
+  constructor(tile_width, tile_height, props, equation) {
     this.tile_width = tile_width;
     this.tile_height = tile_height;
+    this.props = props;
     this.equation = equation;
 
     this.tiles = [];
@@ -74,10 +75,17 @@ class Grid {
     let spritesheet = new createjs.SpriteSheet(data);
     let animation = new createjs.Sprite(spritesheet, "idle");
 
-    // animation.rotation = getRandomInt(-45, 45);
 
     animation.x = 25 + 34 * (x) ;
     animation.y = 90 + 34 * (y) ;
+
+    if (this.props.rotation) {
+      // animation.regX = 4;
+      // animation.regY = 4;
+      animation.rotation = getRandomInt(-1 * this.props.rotation, this.props.rotation);
+    }
+
+    
 
     // console.log(animation, spritesheet);
 
