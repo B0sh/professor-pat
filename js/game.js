@@ -175,8 +175,6 @@ class Game {
             .get(pat.background_fade)
             .to({ alpha: 1 }, 4900)
             .call(function (object) {
-                alert("SHIT");
-
                 pat.background.image = preload.getResult(this.level.background);
                 pat.background_fade.alpha = 0;
 
@@ -285,6 +283,14 @@ class Game {
 
     gameOver() {
         this.destroy();
+
+        // game over logic
+        if (this.score > pat.save_file.high_score) {
+            pat.save_file.high_score = this.score;
+            pat.save();
+        } 
+
+        // game over animations
         stage.addChild(this.levelText);
         stage.addChild(this.tagLineText);
         stage.addChild(this.scoreText);
@@ -340,6 +346,14 @@ class Game {
 
     winOver() {
         this.destroy();
+
+        // win over logic
+        if (this.score > pat.save_file.high_score) {
+            pat.save_file.high_score = this.score;
+            pat.save();
+        } 
+
+        // win over animations
         stage.addChild(this.levelText);
         stage.addChild(this.tagLineText);
         stage.addChild(this.scoreText);

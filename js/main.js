@@ -7,6 +7,7 @@ Animation idea:
 
 */
 
+var VERSION = 1;
 var BACKGROUND_COUNT = 12;
 var WIDTH = 720;
 var HEIGHT = 480;
@@ -16,7 +17,7 @@ var stage;
 var preload;
 var pat;
 var game;
-var game_state = 'menu';
+var game_state;
 
 $(document).ready(function() {
     pat = new ProfessorPat();
@@ -25,6 +26,9 @@ $(document).ready(function() {
 // set up the game / load main menu
 class ProfessorPat {
     constructor () {
+        this.save_file;
+        this.load();
+
         game_state = 'menu';
 
         stage = new createjs.Stage("canvas_game");
@@ -159,6 +163,7 @@ class ProfessorPat {
             // console.log(event.rawX, event.rawY);
             
         }, this);
+
     
     }
 
@@ -195,18 +200,27 @@ class ProfessorPat {
         game.destroy();
         game = undefined;
         
-        // for now this is ok... 
+        this.loadMainMenu();
+    
+    }
+
+    unloadMainMenu() {
+        stage.removeChild(this.highScoreMenuText);
+        stage.removeChild(this.menu_text);
+        this.background.image = preload.getResult('GameBackground');
+    }
+
+    loadMainMenu() {
         game_state = 'menu';
         stage.addChild(this.menu_text);
 
         this.background.image = preload.getResult('MenuBackground');
         this.background_fade.alpha = 0;
-    
-    }
 
-    unloadMainMenu() {
-        stage.removeChild(this.menu_text);
-        this.background.image = preload.getResult('GameBackground');
+        if (this.save_file.high_score != 0) {
+            this.highScoreMenuText.text = "High Score: " + Format(this.save_file.high_score);
+            stage.addChild(this.highScoreMenuText);
+        }
     }
     
     createMainMenu() {
@@ -226,8 +240,81 @@ class ProfessorPat {
         this.menu_text = new createjs.Bitmap(preload.getResult('Menu'));
         this.menu_text.x = 0;
         this.menu_text.y = 0;
-        stage.addChild(this.menu_text);
+        // stage.addChild(this.menu_text);
+
+        this.highScoreMenuText = new createjs.Text("", "30px Roboto", "black");
+        this.highScoreMenuText.x = WIDTH - 20;
+        this.highScoreMenuText.y = HEIGHT - 40;
+        this.highScoreMenuText.textAlign = 'right';
+        // stage.addChild(this.highScoreMenuText);
+
+        this.loadMainMenu();
     }
+
+
+    // Save Game.SaveFile into localStorage 
+    save() {
+        try {
+            localStorage.setItem("Professor_Pat", JSON.stringify(this.save_file));
+            return true;
+        }
+        catch (e) {
+            console.log(e);
+            alert("Save failed to store data in local storage!");
+        }
+
+        return false;
+    }
+
+    // Load the save file from localStorage 
+    load() {
+        let save = 'Invalid';
+
+        try {
+            save = localStorage.getItem("Professor_Pat");
+        }
+        catch (e) {
+            if (e instanceof SecurityError)
+                alert("Browser security settings blocked access to local storage.");
+            else
+                alert("Cannot access localStorage - browser may not support localStorage, or storage may be corrupt");
+            return false;
+        }
+
+        console.log(save);
+
+        // If a save file does not exist, create a new one
+        if (!save) {
+            console.log("New save file created");
+            this.createNewSaveFile();
+            this.save();
+            return false;
+        }
+        
+        if (save == 'Invalid') {
+            alert("Save file not loaded.");
+            this.createNewSaveFile();
+            return false;
+        }
+
+        this.save_file = JSON.parse(save);
+
+        //version differences
+
+        console.log("Game Loaded");
+    }
+
+    createNewSaveFile() {
+        this.save_file = {
+            version: VERSION,
+            volume: 0.5, // assuming that i'll want this
+            high_score: 0,
+        };
+
+        return true;
+    }
+
+
 }
 
 var pressed_keys = [];
