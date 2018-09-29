@@ -11,6 +11,12 @@ class Game {
         this.level = levels["level1"];
         this.level_problems = 0;
 
+        this.problemPointsColorRange = [
+            { color: '#88FF88', num: 800 },
+            { color: '#FFFF88', num: 500 },
+            { color: '#FF8888', num: 0 }
+        ];
+
         this.problem_active = false;
 
         this.initalizeGui();
@@ -34,16 +40,10 @@ class Game {
     updateProblemScore() {
         this.problemScoreDisplay.text = "+" + this.problemPoints;
         this.problemScoreDisplayOutline.text = "+" + this.problemPoints;
-
-        var colorRange = [
-            { color: '#88FF88', num: 800 },
-            { color: '#FFFF88', num: 500 },
-            { color: '#FF8888', num: 0 }
-        ];
     
-        for (let i = 0; i < colorRange.length; i++) {
-            if (this.problemPoints > colorRange[i].num) {
-                this.problemScoreDisplay.color = colorRange[i].color;
+        for (let i = 0; i < this.problemPointsColorRange.length; i++) {
+            if (this.problemPoints > this.problemPointsColorRange[i].num) {
+                this.problemScoreDisplay.color = this.problemPointsColorRange[i].color;
                 break;
             }
         }
@@ -51,7 +51,7 @@ class Game {
 
     updateScore() {
         // maybe can do some kind of flash animation here
-        this.scoreText.text = "Score: " + this.score;
+        this.scoreText.text = "Score: " + Format(this.score);
     }
 
     updateLives() {
@@ -78,6 +78,14 @@ class Game {
             this.score += this.problemPoints;
             this.correctAnswerScreenScoreText.text = "+" + this.problemPoints;
             this.problems_correct++;
+
+            for (let i = 0; i < this.problemPointsColorRange.length; i++) {
+                if (this.problemPoints > this.problemPointsColorRange[i].num) {
+                    this.correctAnswerScreenScoreText.color = this.problemPointsColorRange[i].color;
+                    break;
+                }
+            }
+
             stage.addChild(this.correctAnswerScreenText);
             stage.addChild(this.correctAnswerScreenScoreText);
             
@@ -86,6 +94,12 @@ class Game {
         // Incorrect Answer
         } else {
             this.lives --;
+
+            if (this.lives == 0) {
+                this.gameOver();
+                return;
+            }
+
             this.updateLives();
             stage.addChild(this.incorrectAnswerScreenText);    
             stage.addChild(this.incorrectAnswerScreenScoreText);
@@ -109,6 +123,8 @@ class Game {
 
     // advance to next level and perform various level animations
     nextLevel() {
+        this.problemPoints = 999;
+
         this.level_problems = 0;
         this.level = levels[this.level.next_level];
         this.levelText.text = "Level " + this.level.id;
@@ -123,7 +139,7 @@ class Game {
         pat.background_fade.image = preload.getResult(this.level.background);
 
         createjs.Tween.get(pat.background_fade).to({ alpha: 1 }, 4900);
-        createjs.Tween.get(this.levelUpScreenText).to({ x: 700 }, 4900 );
+        createjs.Tween.get(this.levelUpScreenText).to({ x: 900 }, 4900 );
 
         let _this = this;
         setTimeout(function () {
@@ -200,7 +216,59 @@ class Game {
         stage.removeChild(this.correctAnswerScreenScoreText);
         stage.removeChild(this.incorrectAnswerScreenText);
         stage.removeChild(this.incorrectAnswerScreenScoreText);
+        stage.removeChild(this.gameOverText);
+        stage.removeChild(this.gameOverText2);
         
+    }
+
+    hasEnded() {
+        if (this.lives == 0)
+            return true;
+        return false;
+    }
+
+    gameOver() {
+        this.destroy();
+        stage.addChild(this.levelText);
+        stage.addChild(this.tagLineText);
+        stage.addChild(this.scoreText);
+
+        // move the score to the center... cool?
+        createjs.Tween.get(this.scoreText).to({ 
+            x: 720/2, 
+            y: 280,
+            scaleX: 1.5,
+            scaleY: 1.5
+        }, 1500);
+
+        pat.background_fade.image = preload.getResult("GameOverBackground");
+
+        createjs.Tween.get(pat.background_fade).to({ alpha: 1 }, 1500);
+        setTimeout(function () {
+            if (game_state != 'game')
+                return;
+                
+            pat.background.image = preload.getResult("GameOverBackground");
+            pat.background_fade.alpha = 0;
+            stage.removeChild(pat.background_fade);
+        }, 1500);
+
+        // TODO: Maybe add an image here
+        this.gameOverText = new createjs.Text("", "48px Roboto", "black");
+        this.gameOverText.y = 220;
+        this.gameOverText.x = 720/2;
+        this.gameOverText.text = "Game Over";
+        this.gameOverText.textAlign = 'center';
+        this.gameOverText.textBaseline = 'middle';    
+        stage.addChild(this.gameOverText);
+
+        this.gameOverText2 = new createjs.Text("", "italic 20px Roboto", "#444");
+        this.gameOverText2.y = 340;
+        this.gameOverText2.x = 720/2;
+        this.gameOverText2.text = "Press space to go back to the main menu i guess";
+        this.gameOverText2.textAlign = 'center';
+        this.gameOverText2.textBaseline = 'middle';    
+        stage.addChild(this.gameOverText2);
     }
 
     initalizeGui() {
@@ -302,7 +370,8 @@ class Game {
         this.correctAnswerScreenScoreText.y = 300;
         this.correctAnswerScreenScoreText.x = 220;
         this.correctAnswerScreenScoreText.textAlign = 'center';
-        this.correctAnswerScreenScoreText.textBaseline = 'middle';      
+        this.correctAnswerScreenScoreText.textBaseline = 'middle';     
+        this.correctAnswerScreenScoreText.shadow = new createjs.Shadow("#333", 1, 1, 0);
         // stage.addChild(this.correctAnswerScreenScoreText);
 
         this.incorrectAnswerScreenText = new createjs.Text("Incorrect :(", "48px Roboto", "black");
@@ -316,7 +385,8 @@ class Game {
         this.incorrectAnswerScreenScoreText.y = 300;
         this.incorrectAnswerScreenScoreText.x = 220;
         this.incorrectAnswerScreenScoreText.textAlign = 'center';
-        this.incorrectAnswerScreenScoreText.textBaseline = 'middle';      
+        this.incorrectAnswerScreenScoreText.textBaseline = 'middle';   
+        this.incorrectAnswerScreenScoreText.shadow = new createjs.Shadow("#333", 1, 1, 0);
         // stage.addChild(this.incorrectAnswerScreenScoreText);
     }
 }

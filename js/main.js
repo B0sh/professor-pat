@@ -37,6 +37,7 @@ class ProfessorPat {
         let manifest = [
             { id: "MenuBackground", src:   "images/background2.png" },
             { id: "GameBackground", src:   "images/background0.png" },
+            { id: "GameOverBackground", src:   "images/background10.png" },
             { id: "Menu", src:   "images/shit menu.png" },
             { id: "RedPerson", src:   "images/person-red.png" },
             { id: "YellowPerson", src:   "images/person-yellow.png" },
@@ -79,18 +80,12 @@ class ProfessorPat {
         createjs.Ticker.addEventListener("tick", this.tick);
         
         this.createMainMenu();
-    
-        // stage.on("stagemousemove", function(event) {
-        // //   paddle.x = stage.mouseX;
-        // });
 
         // fuck it global scope keyboard handling. get this game out!
         window.onkeyup = keyUpHandler;
         window.onkeydown = keyDownHandler;
 
-        // console.log(this);
         stage.on("stagemousedown", function(event) {
-            // console.log(this);
 
             if (game_state == 'menu') {
                 
@@ -105,22 +100,12 @@ class ProfessorPat {
 
             } else {
 
-                // game.nextProblem();
-                // let rand = getRandomInt(1, 9);
-                // temp++;
-                // console.log(temp);
-                // this.background.image = preload.getResult('Background' + (temp % BACKGROUND_COUNT));
 
 
             }
             // console.log(event.rawX, event.rawY);
             
         }, this);
-    
-        // window.onkeyup = keyUpHandler;
-        // window.onkeydown = keyDownHandler;
-    
-        // stage.canvas.height = window.innerHeight;
     
     }
 
@@ -145,9 +130,13 @@ class ProfessorPat {
 
     }
 
-    endGame() {
+    endGame(key) {
         // cannot end game if it is not started
         if (game_state != 'game') 
+            return;
+
+        // if its the spacebar then the game has to be over to go to main menu
+        if (key == "space" && !game.hasEnded())
             return;
 
         game.destroy();
@@ -156,8 +145,9 @@ class ProfessorPat {
         // for now this is ok... 
         game_state = 'menu';
         stage.addChild(this.menu_text);
+        stage.removeChild(pat.background_fade);
         this.background.image = preload.getResult('MenuBackground');
-        
+    
     }
 
     unloadMainMenu() {
@@ -203,11 +193,11 @@ function keyDownHandler (event) {
         // console.log(event.keyCode, pat.game_state);
         if (game_state == 'game') {
             switch (event.keyCode) {
-                case 27: pat.endGame(); break;
+                case 27: pat.endGame("escape"); break;
                 case 49: game.answerQuestion(1); break; // 1
                 case 50: game.answerQuestion(2); break; // 2
                 case 51: game.answerQuestion(3); break; // 3
-                case 32:  break; // space
+                case 32: pat.endGame("space"); break; // space
             }
         }
         // console.log(event);
