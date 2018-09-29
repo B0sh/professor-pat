@@ -8,6 +8,8 @@ Animation idea:
 */
 
 var BACKGROUND_COUNT = 12;
+var WIDTH = 720;
+var HEIGHT = 480;
 var temp = 1;
 
 var stage;
@@ -26,6 +28,12 @@ class ProfessorPat {
         game_state = 'menu';
 
         stage = new createjs.Stage("canvas_game");
+
+        //TODO: Upgrade to 60
+        createjs.Ticker.setFPS(30);
+        createjs.Ticker.addEventListener("tick", this.tick);
+
+        this.initLoading();
 
         preload = new createjs.LoadQueue(true);
         // the this on the end binds the scope in the handle function later so I can use classes
@@ -58,16 +66,63 @@ class ProfessorPat {
         preload.loadManifest(manifest);
     }
 
-    handleError() {
+    // start loading
+    initLoading() {
+        this.loadingScreenBackground = new createjs.Shape();
+        this.loadingScreenBackground.graphics.beginFill('rgb(44, 6, 67)');
+        this.loadingScreenBackground.graphics.drawRect(0, 0, WIDTH-16, HEIGHT-16);
+        this.loadingScreenBackground.graphics.endFill();
+        this.loadingScreenBackground.x = 8;
+        this.loadingScreenBackground.y = 8;
+        this.loadingScreenBackground.shadow = new createjs.Shadow("#333", 0, 0, 9);
+        stage.addChild(this.loadingScreenBackground);
 
+        this.loadingScreenText = new createjs.Text("Loading... Game... Soon...", "italic 40px Roboto", "#aa0");
+        this.loadingScreenText.x = WIDTH/2;
+        this.loadingScreenText.y = HEIGHT/2 - 30;
+        this.loadingScreenText.textAlign = 'center';
+        this.loadingScreenText.textBaseline = 'middle';   
+        stage.addChild(this.loadingScreenText);
+        
+        this.loadingScreenProgressBarBorder = new createjs.Shape();
+        this.loadingScreenProgressBarBorder.graphics.beginFill('#888');
+        this.loadingScreenProgressBarBorder.graphics.drawRoundRect(0, 0, 404, 34, 6);
+        this.loadingScreenProgressBarBorder.x = WIDTH/2 - 202;
+        this.loadingScreenProgressBarBorder.y = HEIGHT/2 + 48 - 30;
+        this.loadingScreenProgressBarBorder.graphics.endFill();
+        stage.addChild(this.loadingScreenProgressBarBorder);
+
+        this.loadingScreenProgressBar = new createjs.Shape();
+        this.loadingScreenProgressBar.x = WIDTH/2 - 200;
+        this.loadingScreenProgressBar.y = HEIGHT/2 + 50 - 30;
+        stage.addChild(this.loadingScreenProgressBar);
+    }
+
+    destroyLoading() {
+        stage.removeChild(this.loadingScreenBackground);
+        stage.removeChild(this.loadingScreenText);
+        stage.removeChild(this.loadingScreenProgressBar);
+        stage.removeChild(this.loadingScreenText);
+    }
+
+    handleError(event) {
+        console.log("ERROR:", event);
     }
   
     handleFileLoaded(event) {
-    //   let image = preload.getResult(event.item.id);
-    //   document.body.appendChild(image);
+        
     }
   
     handleFileProgress(event) {
+
+        // better way to do this? solves issue with odd corners
+        if (preload.progress == 0)
+            return;
+
+        this.loadingScreenProgressBar.graphics.beginFill('#00A');
+        this.loadingScreenProgressBar.graphics.drawRoundRect(0, 0, 400 * preload.progress, 30, 6);
+        this.loadingScreenProgressBar.graphics.endFill();
+
         console.log("Progress: " + preload.progress*100 + "%");
     }
 
@@ -76,10 +131,7 @@ class ProfessorPat {
         
         createjs.Touch.enable(stage);
         
-        //TODO: Upgrade to 60
-        createjs.Ticker.setFPS(30);
-        createjs.Ticker.addEventListener("tick", this.tick);
-        
+        this.destroyLoading();
         this.createMainMenu();
 
         // fuck it global scope keyboard handling. get this game out!
@@ -157,11 +209,6 @@ class ProfessorPat {
     }
     
     createMainMenu() {
-        
-        // this.background = new createjs.Shape();
-        // this.background.graphics.beginFill('#CFFAA5');
-        // this.background.graphics.drawRect(0, 0, 135135, 151351355);
-        // this.background.graphics.endFill();
 
         this.background = new createjs.Bitmap(preload.getResult('MenuBackground'));
         this.background.x = 0;
@@ -191,7 +238,8 @@ function keyUpHandler(event) {
 function keyDownHandler (event) {
     if (pressed_keys.indexOf(event.keyCode) == -1) {
         pressed_keys.push(event.keyCode);
-        // console.log(event.keyCode, pat.game_state);
+        // console.log(event.keyCode);
+
         if (game_state == 'game') {
             switch (event.keyCode) {
                 case 27: pat.endGame("escape"); break;
@@ -201,72 +249,9 @@ function keyDownHandler (event) {
                 case 32: pat.endGame("space"); break; // space
             }
         }
-        // console.log(event);
-
     }
 };
 
 
 
 
-
-
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-  
-    // While there remain elements to shuffle...
-    while (0 !== currentIndex) {
-  
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-  
-      // And swap it with the current element.
-      temporaryValue = array[currentIndex];
-      array[currentIndex] = array[randomIndex];
-      array[randomIndex] = temporaryValue;
-    }
-  
-    return array;
-  }
-  
-  function getRandomInt (min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-  
-  function getRandomIntNot (min, max, not) {
-      let randy;
-      do {
-        randy = Math.floor(Math.random() * (max - min + 1)) + min;
-      } while (not.indexOf(randy) !== -1)
-      return randy;
-  }
-  
-  
-  /* phpjs number_format */
-  function Format(number, decimals, dec_point, thousands_sep) {
-    //  discuss at: http://phpjs.org/functions/number_format/
-  
-    number = (number + '')
-      .replace(/[^0-9+\-Ee.]/g, '');
-    var n = !isFinite(+number) ? 0 : +number,
-      prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
-      sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
-      dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
-      s = '',
-      toFixedFix = function(n, prec) {
-        var k = Math.pow(10, prec);
-        return '' + (Math.round(n * k) / k)
-          .toFixed(prec);
-      };
-    // Fix for IE parseFloat(0.55).toFixed(0) = 0;
-    s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
-    if (s[0].length > 3) {
-      s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
-    }
-    if ((s[1] || '').length < prec) {
-      s[1] = s[1] || '';
-      s[1] += new Array(prec - s[1].length + 1).join('0');
-    }
-    return s.join(dec);
-  }

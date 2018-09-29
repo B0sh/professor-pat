@@ -44,7 +44,7 @@ class Game {
 
         if (this.problem_active && this.grid && this.grid.props.colors) {
             if (this.ticks % 10 == 0) {
-                // THANK FUCK YOU CAN JUST ADD TO THE OFFSET!!!!
+                //! directions don't work properly
                 switch (this.grid.props.colors) {
                     case 'down':
                         this.grid.equation.offset++;
@@ -162,7 +162,7 @@ class Game {
 
         this.levelText.text = "Level " + this.level.id;
 
-        this.levelUpScreenText = new createjs.Text("Level Up!", "48px Roboto", "black");
+        this.levelUpScreenText   = new createjs.Text("Level Up!", "48px Roboto", "black");
         this.levelUpScreenText.y = 250;
         this.levelUpScreenText.x = -100;
         this.levelUpScreenText.textAlign = 'center';
@@ -274,7 +274,7 @@ class Game {
 
         // move the score to the center... cool?
         createjs.Tween.get(this.scoreText).to({ 
-            x: 720/2, 
+            x: WIDTH/2, 
             y: 280,
             scaleX: 1.5,
             scaleY: 1.5
@@ -295,7 +295,7 @@ class Game {
         // TODO: Maybe add an image here
         this.gameOverText = new createjs.Text("", "48px Roboto", "black");
         this.gameOverText.y = 220;
-        this.gameOverText.x = 720/2;
+        this.gameOverText.x = WIDTH/2;
         this.gameOverText.text = "Game Over";
         this.gameOverText.textAlign = 'center';
         this.gameOverText.textBaseline = 'middle';    
@@ -303,7 +303,7 @@ class Game {
 
         this.gameOverText2 = new createjs.Text("", "italic 20px Roboto", "#444");
         this.gameOverText2.y = 340;
-        this.gameOverText2.x = 720/2;
+        this.gameOverText2.x = WIDTH/2;
         this.gameOverText2.text = "Press space to go back to the main menu i guess";
         this.gameOverText2.textAlign = 'center';
         this.gameOverText2.textBaseline = 'middle';    
@@ -319,7 +319,7 @@ class Game {
 
         // move the score to the center... cool?
         createjs.Tween.get(this.scoreText).to({ 
-            x: 720/2, 
+            x: WIDTH/2, 
             y: 280,
             scaleX: 1.5,
             scaleY: 1.5
@@ -340,7 +340,7 @@ class Game {
         // TODO: Maybe add an image here
         this.winOverText = new createjs.Text("", "48px Roboto", "black");
         this.winOverText.y = 220;
-        this.winOverText.x = 720/2;
+        this.winOverText.x = WIDTH/2;
         this.winOverText.text = "Victory, Professor Pat!";
         this.winOverText.textAlign = 'center';
         this.winOverText.textBaseline = 'middle';    
@@ -348,7 +348,7 @@ class Game {
 
         this.winOverText2 = new createjs.Text("", "italic 20px Roboto", "#444");
         this.winOverText2.y = 340;
-        this.winOverText2.x = 720/2;
+        this.winOverText2.x = WIDTH/2;
         this.winOverText2.text = "Press space to go back to the main menu i guess";
         this.winOverText2.textAlign = 'center';
         this.winOverText2.textBaseline = 'middle';    
