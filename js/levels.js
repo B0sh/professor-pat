@@ -22,7 +22,7 @@ var levels = {
     id: 1,
     question_count: 5,
     next_level: "level2",
-    background: "Background0",
+    background: "Background12",
     generate: function() {
       return new Grid(
         11,
@@ -54,21 +54,40 @@ var levels = {
     next_level: "level4",
     background: "Background9",
     generate: function() {
+      let directions = [ "up", "down", "left", "right" ];
+
       return new Grid(
-        getRandomInt(4, 7),
-        getRandomInt(4, 7),
-        {},
+        getRandomInt(6, 9),
+        getRandomInt(6, 9),
+        { colors: directions[getRandomInt(0, directions.length - 1)] },
         equations["single"].generate([3, 9])
       );
     }
   },
   level4: {
     id: 4,
+    question_count: 8,
+    next_level: "level5",
+    background: "Background8",
+    generate: function() {
+      let directions = [ "up", "down", "left", "right" ];
+
+      return new Grid(
+        getRandomInt(10, 11),
+        getRandomInt(9, 10),
+        { colors: directions[getRandomInt(0, directions.length - 1)],
+        rotation: 25 },
+        equations["single"].generate([3, 9])
+      );
+    }
+  },
+  level5: {
+    id: 5,
     question_count: 10,
     next_level: "Done",
     background: "Background7",
     generate: function() {
-      return new Grid(12, 10, {}, equations["double"].generate([3, 9]));
+      return new Grid(12, 11, {}, equations["double"].generate([3, 9]));
     }
   },
   Done: {

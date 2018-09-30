@@ -42,20 +42,22 @@ class Game {
     }
 
     if (this.problem_active && this.grid && this.grid.props.colors) {
-      if (this.ticks % 10 == 0) {
+      if (this.ticks % 12 == 0) {
+        // console.log(this.grid.tile_width, this.grid.tile_height);
         //! directions don't work properly
         switch (this.grid.props.colors) {
           case "down":
+            this.grid.equation.offset -= this.grid.tile_width;
+            break; 
+          case "left":
             this.grid.equation.offset++;
             break;
-          case "left":
-            this.grid.equation.offset--;
-            break;
           case "up":
-            this.grid.equation.offset += this.grid.tile_width - 1;
+            this.grid.equation.offset += this.grid.tile_width;
             break;
           case "right":
-            this.grid.equation.offset -= this.grid.tile_width - 1;
+            // this.grid.equation.offset -= this.grid.tile_width - 1;
+            this.grid.equation.offset--;
             break;
         }
         this.grid.destroy();
