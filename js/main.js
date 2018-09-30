@@ -40,6 +40,10 @@ class ProfessorPat {
     this.initLoading();
 
     preload = new createjs.LoadQueue(true);
+
+    // https://createjs.com/tutorials/SoundJS%20and%20PreloadJS/
+    preload.installPlugin(createjs.Sound);
+
     // the this on the end binds the scope in the handle function later so I can use classes
     preload.on("fileload", this.handleFileLoaded, this);
     preload.on("progress", this.handleFileProgress, this);
@@ -57,7 +61,9 @@ class ProfessorPat {
       { id: "OrangePerson", src: "images/person-orange.png" },
       { id: "PurplePerson", src: "images/person-purple.png" },
       { id: "GreenPerson", src: "images/person-green.png" },
-      { id: "Life", src: "images/heart.png" }
+      { id: "Life", src: "images/heart.png" },
+
+      { id: "Soundtrack", src: "soundtrack-loopable.wav" }
     ];
 
     for (let i = 0; i < BACKGROUND_COUNT; i++) {
@@ -153,6 +159,13 @@ class ProfessorPat {
     this.destroyLoading();
     this.createMainMenu();
 
+    // init soundtrack
+    createjs.Sound.setVolume(this.save_file.volume);
+    this.soundtrack = createjs.Sound.play("Soundtrack", {
+      interrupt: createjs.Sound.INTERRUPT_ANY,
+      loop: -1
+    });
+
     // fuck it global scope keyboard handling. get this game out!
     window.onkeyup = keyUpHandler;
     window.onkeydown = keyDownHandler;
@@ -162,6 +175,7 @@ class ProfessorPat {
       function(event) {
         if (game_state == "menu") {
           // start button coords
+          //! I can use ButtonHelper for this but I couldn't figure it out
           let top_corner = [91, 309];
           let bottom_corner = [263, 378];
 
@@ -173,9 +187,27 @@ class ProfessorPat {
           ) {
             this.startGame();
           }
+
+          // mute button coords
+          //! I can use ButtonHelper for this but I couldn't figure it out
+          top_corner = [630, 391];
+          bottom_corner = [662, 425];
+
+          if (
+            event.rawX > top_corner[0] &&
+            event.rawX < bottom_corner[0] &&
+            event.rawY > top_corner[1] &&
+            event.rawY < bottom_corner[1]
+          ) {
+            if (this.save_file.volume == 0) {
+              this.unmute();
+            } else {
+              this.mute();
+            }
+          }
         } else {
         }
-        // console.log(event.rawX, event.rawY);
+        console.log(event.rawX, event.rawY);
       },
       this
     );
@@ -212,6 +244,8 @@ class ProfessorPat {
   unloadMainMenu() {
     stage.removeChild(this.highScoreMenuText);
     stage.removeChild(this.menu_text);
+    stage.removeChild(this.muteButtonIsNotMuted);
+    stage.removeChild(this.muteButtonIsMuted);
     this.background.image = preload.getResult("GameBackground");
   }
 
@@ -226,6 +260,12 @@ class ProfessorPat {
       this.highScoreMenuText.text =
         "High Score: " + Format(this.save_file.high_score);
       stage.addChild(this.highScoreMenuText);
+    }
+
+    if (this.save_file.volume == 0) {
+      stage.addChild(this.muteButtonIsMuted);
+    } else {
+      stage.addChild(this.muteButtonIsNotMuted);
     }
   }
 
@@ -255,7 +295,44 @@ class ProfessorPat {
     this.highScoreMenuText.textAlign = "right";
     // stage.addChild(this.highScoreMenuText);
 
+    //TODO: create mute/unmute images
+    this.muteButtonIsNotMuted = new createjs.Bitmap(preload.getResult("Life"));
+    this.muteButtonIsNotMuted.x = WIDTH - 90;
+    this.muteButtonIsNotMuted.y = HEIGHT - 90;
+    this.muteButtonIsNotMuted.scaleX = 0.041;
+    this.muteButtonIsNotMuted.scaleY = 0.041;
+    // stage.addChild(this.muteButtonIsNotMuted);
+
+    //TODO: create mute/unmute images
+    this.muteButtonIsMuted = new createjs.Bitmap(preload.getResult("Life"));
+    this.muteButtonIsMuted.x = WIDTH - 60;
+    this.muteButtonIsMuted.y = HEIGHT - 60;
+    this.muteButtonIsMuted.scaleX = -0.041;
+    this.muteButtonIsMuted.scaleY = -0.041;
+    // stage.addChild(this.muteButtonIsMuted);
+
     this.loadMainMenu();
+  }
+
+  mute() {
+    // stopAudio();
+    this.save_file.volume = 0;
+    createjs.Sound.setVolume(this.save_file.volume);
+    stage.removeChild(this.muteButtonIsNotMuted);
+    stage.addChild(this.muteButtonIsMuted);
+
+    this.save();
+  }
+
+  unmute() {
+    // playAudio();
+    this.save_file.volume = 1;
+    this.soundtrack.position = 0;
+    createjs.Sound.setVolume(this.save_file.volume);
+    stage.addChild(this.muteButtonIsNotMuted);
+    stage.removeChild(this.muteButtonIsMuted);
+
+    this.save();
   }
 
   // Save Game.SaveFile into localStorage
