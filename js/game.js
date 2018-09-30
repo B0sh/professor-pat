@@ -456,8 +456,6 @@ class Game {
       let life = new createjs.Bitmap(preload.getResult("Life"));
       life.y = 410;
       life.x = 498 + 40 * l;
-      life.scaleX = 0.041;
-      life.scaleY = 0.041;
       this.lifeDispays.push(life);
       stage.addChild(this.lifeDispays[l]);
     }

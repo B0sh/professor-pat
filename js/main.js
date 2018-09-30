@@ -8,7 +8,7 @@ Animation idea:
 */
 
 var VERSION = 1;
-var BACKGROUND_COUNT = 12;
+var BACKGROUND_COUNT = 14;
 var WIDTH = 720;
 var HEIGHT = 480;
 var temp = 1;
@@ -53,7 +53,7 @@ class ProfessorPat {
     let manifest = [
       { id: "MenuBackground", src: "images/background2.png" },
       { id: "GameBackground", src: "images/background0.png" },
-      { id: "GameOverBackground", src: "images/background10.png" },
+      { id: "GameOverBackground", src: "images/background13.png" },
       { id: "WinOverBackground", src: "images/background4.png" },
       { id: "Menu", src: "images/shit menu.png" },
       { id: "RedPerson", src: "images/person-red.png" },
@@ -61,7 +61,9 @@ class ProfessorPat {
       { id: "OrangePerson", src: "images/person-orange.png" },
       { id: "PurplePerson", src: "images/person-purple.png" },
       { id: "GreenPerson", src: "images/person-green.png" },
-      { id: "Life", src: "images/heart.png" },
+      { id: "Life", src: "images/heart-small.png" },
+      { id: "Mute", src: "images/mute-small.png" },
+      { id: "Unmute", src: "images/unmute-small.png" },
 
       { id: "Soundtrack", src: "soundtrack-loopable.wav" }
     ];
@@ -190,8 +192,8 @@ class ProfessorPat {
 
           // mute button coords
           //! I can use ButtonHelper for this but I couldn't figure it out
-          top_corner = [630, 391];
-          bottom_corner = [662, 425];
+          top_corner = [656, 386];
+          bottom_corner = [702, 431];
 
           if (
             event.rawX > top_corner[0] &&
@@ -296,19 +298,15 @@ class ProfessorPat {
     // stage.addChild(this.highScoreMenuText);
 
     //TODO: create mute/unmute images
-    this.muteButtonIsNotMuted = new createjs.Bitmap(preload.getResult("Life"));
-    this.muteButtonIsNotMuted.x = WIDTH - 90;
+    this.muteButtonIsNotMuted = new createjs.Bitmap(preload.getResult("Unmute"));
+    this.muteButtonIsNotMuted.x = WIDTH - 60;
     this.muteButtonIsNotMuted.y = HEIGHT - 90;
-    this.muteButtonIsNotMuted.scaleX = 0.041;
-    this.muteButtonIsNotMuted.scaleY = 0.041;
     // stage.addChild(this.muteButtonIsNotMuted);
 
     //TODO: create mute/unmute images
-    this.muteButtonIsMuted = new createjs.Bitmap(preload.getResult("Life"));
+    this.muteButtonIsMuted = new createjs.Bitmap(preload.getResult("Mute"));
     this.muteButtonIsMuted.x = WIDTH - 60;
-    this.muteButtonIsMuted.y = HEIGHT - 60;
-    this.muteButtonIsMuted.scaleX = -0.041;
-    this.muteButtonIsMuted.scaleY = -0.041;
+    this.muteButtonIsMuted.y = HEIGHT - 90;
     // stage.addChild(this.muteButtonIsMuted);
 
     this.loadMainMenu();
