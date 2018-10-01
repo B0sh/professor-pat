@@ -54,7 +54,7 @@ var levels = {
     next_level: "level4",
     background: "Background9",
     generate: function() {
-      let directions = [ "up", "down", "left", "right" ];
+      let directions = ["up", "down", "left", "right"];
 
       return new Grid(
         getRandomInt(6, 9),
@@ -70,24 +70,26 @@ var levels = {
     next_level: "level5",
     background: "Background8",
     generate: function() {
-      let directions = [ "up", "down", "left", "right" ];
+      let directions = ["up", "down", "left", "right"];
 
       return new Grid(
         getRandomInt(10, 11),
         getRandomInt(9, 10),
-        { colors: directions[getRandomInt(0, directions.length - 1)],
-        rotation: 25 },
+        {
+          colors: directions[getRandomInt(0, directions.length - 1)],
+          rotation: 25
+        },
         equations["single"].generate([3, 9])
       );
     }
   },
   level5: {
     id: 5,
-    question_count: 10,
+    question_count: 8,
     next_level: "Done",
     background: "Background7",
     generate: function() {
-      return new Grid(12, 11, {}, equations["double"].generate([3, 9]));
+      return new Grid(12, 11, {}, equations["double"].generate([2, 5]));
     }
   },
   Done: {
