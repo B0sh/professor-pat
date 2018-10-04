@@ -55,7 +55,7 @@ class ProfessorPat {
       { id: "GameBackground", src: "images/background0.png" },
       { id: "GameOverBackground", src: "images/background13.png" },
       { id: "WinOverBackground", src: "images/background4.png" },
-      { id: "Menu", src: "images/shit menu.png" },
+      { id: "Menu", src: "images/menu-text.png" },
       { id: "RedPerson", src: "images/person-red.png" },
       { id: "YellowPerson", src: "images/person-yellow.png" },
       { id: "OrangePerson", src: "images/person-orange.png" },
@@ -64,6 +64,8 @@ class ProfessorPat {
       { id: "Life", src: "images/heart-small.png" },
       { id: "Mute", src: "images/mute-small.png" },
       { id: "Unmute", src: "images/unmute-small.png" },
+
+      { id: "ProfessorPat", src: "images/pp-4.png" },
 
       { id: "Soundtrack", src: "soundtrack-loopable.wav" }
     ];
@@ -248,12 +250,14 @@ class ProfessorPat {
     stage.removeChild(this.menu_text);
     stage.removeChild(this.muteButtonIsNotMuted);
     stage.removeChild(this.muteButtonIsMuted);
+    stage.removeChild(this.professor_pat);
     this.background.image = preload.getResult("GameBackground");
   }
 
   loadMainMenu() {
     game_state = "menu";
     stage.addChild(this.menu_text);
+    stage.addChild(this.professor_pat);
 
     this.background.image = preload.getResult("MenuBackground");
     this.background_fade.alpha = 0;
@@ -276,7 +280,6 @@ class ProfessorPat {
     this.background.x = 0;
     this.background.y = 0;
     stage.addChild(this.background);
-
     // used to do a fade animation in the correct location in the stack
     this.background_fade = new createjs.Bitmap(
       preload.getResult("GameBackground")
@@ -286,6 +289,31 @@ class ProfessorPat {
     this.background_fade.alpha = 0;
     stage.addChild(this.background_fade);
 
+
+    var data = {
+      images: [ preload.getResult("ProfessorPat") ],
+      framerate: 8,
+      frames: {
+        width: 270,
+        height: 270
+      },
+      animations: {
+        idle: {
+          speed: 1/7,
+          frames: [0, 1, 2, 3, 4, 3, 2, 1]
+        }
+      }
+    };
+
+    let spritesheet = new createjs.SpriteSheet(data);
+    this.professor_pat = new createjs.Sprite(spritesheet, "idle");
+    
+    this.professor_pat.x = 450;
+    this.professor_pat.y = 150;
+    // this.professor_pat.scaleX = 1.2;
+    // this.professor_pat.scaleY = 1.2;
+    // stage.addChild(this.professor_pat);
+    
     this.menu_text = new createjs.Bitmap(preload.getResult("Menu"));
     this.menu_text.x = 0;
     this.menu_text.y = 0;
