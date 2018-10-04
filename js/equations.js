@@ -30,38 +30,45 @@ var equations = {
 
   double: new Equation(
     "modmod",
-    function() {
-      this.number = [getRandomInt(2, 5)];
-      this.number[1] = getRandomIntNot(2, 5, this.number);
-      this.number = this.number.sort(function(a, b) {
-        return a - b;
-      });
-
+    function(params) {
       this.offset = getRandomInt(0, 10);
 
-      var recordChoices = [this.number];
-      function genChoice() {
-        do {
-          var number = [getRandomInt(2, 5)];
-          number[1] = getRandomIntNot(2, 5, number);
-          number = number.sort(function(a, b) {
-            return a - b;
-          });
-        } while (recordChoices.indexOf(number) !== -1);
-        recordChoices.push(number);
-        return number[0] + ", " + number[1];
+      let numbers = [];
+      for (let i = params[0]; i <= params[1]; i++) {
+        numbers.push(i);
+      }
+
+      // generate a ordered pair of numbers within the bounds
+      function randomDouble() {
+        let random = shuffle(numbers);
+        let pair = [random[0], random[1]].sort(function(a, b) {
+          return a - b;
+        });
+        return pair;
+      }
+
+      this.number = randomDouble();
+
+      // generate 5 total choices that aren't present already
+      let choices = [this.number];
+      while (choices.length != 5) {
+        let next_pair = randomDouble();
+        if (!isItemIn2DArray(choices, next_pair)) {
+          choices.push(next_pair);
+        }
       }
 
       this.choices = [
-        "Every " + genChoice(),
-        "Every " + genChoice(),
+        "Every " + choices[1][0] + ", " + choices[1][1],
+        "Every " + choices[2][0] + ", " + choices[2][1],
         "Every " + this.number[0] + ", " + this.number[1],
-        "Every " + genChoice(),
-        "Every " + genChoice()
+        "Every " + choices[3][0] + ", " + choices[3][1],
+        "Every " + choices[4][0] + ", " + choices[4][1]
       ];
 
       this.inPattern = [];
 
+      // is there a better way to do this......
       let q = 0,
         n = 0;
       for (let y = -200; y <= 2500; y++) {
