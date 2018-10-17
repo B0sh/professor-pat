@@ -260,7 +260,6 @@ class Game {
     stage.removeChild(this.levelText);
     stage.removeChild(this.tagLineText);
     stage.removeChild(this.scoreText);
-    stage.removeChild(this.livesText);
     for (let l = 0; l < 3; l++) stage.removeChild(this.lifeDispays[l]);
     stage.removeChild(this.problemScoreText);
     stage.removeChild(this.problemScoreDisplayOutline);
@@ -419,19 +418,12 @@ class Game {
     this.scoreText.textBaseline = "middle";
     stage.addChild(this.scoreText);
 
-    this.livesText = new createjs.Text("Lives:", "24px Roboto", "black");
-    this.livesText.y = 400;
-    this.livesText.x = 550;
-    this.livesText.textAlign = "center";
-    this.livesText.textBaseline = "middle";
-    stage.addChild(this.livesText);
-
     // lifes sare complicated
     this.lifeDispays = [];
     for (let l = 0; l < 3; l++) {
       let life = new createjs.Bitmap(preload.getResult("Life"));
-      life.y = 410;
-      life.x = 498 + 40 * l;
+      life.y = 400;
+      life.x = 484 + 44 * l;
       this.lifeDispays.push(life);
       stage.addChild(this.lifeDispays[l]);
     }

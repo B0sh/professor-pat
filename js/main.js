@@ -64,7 +64,7 @@ class ProfessorPat {
       { id: "OrangePerson", src: "images/person-orange.png" },
       { id: "PurplePerson", src: "images/person-purple.png" },
       { id: "GreenPerson", src: "images/person-green.png" },
-      { id: "Life", src: "images/heart-small.png" },
+      { id: "Life", src: "images/heart.png" },
 
       { id: "Fullscreen", src: "images/fullscreen.png" },
       { id: "Mute", src: "images/mute-small.png" },
