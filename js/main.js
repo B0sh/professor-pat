@@ -57,7 +57,7 @@ class ProfessorPat {
       { id: "WinOverBackground", src: "images/background4.png" },
       { id: "Menu", src: "images/cool-menu.png" },
       { id: "GameOverTextImage", src: "images/game-over.png" },
-      { id: "YouWinTextImage", src: "images/you-win.png" },
+      { id: "WinOverTextImage", src: "images/you-win.png" },
 
       { id: "RedPerson", src: "images/person-red.png" },
       { id: "YellowPerson", src: "images/person-yellow.png" },
@@ -178,7 +178,7 @@ class ProfessorPat {
     // fuck it global scope keyboard handling. get this game out!
     window.onkeyup = keyUpHandler;
     window.onkeydown = keyDownHandler;
-    
+
     //! I can use ButtonHelper for this but I couldn't figure it out
     stage.on(
       "stagemousedown",
@@ -206,11 +206,10 @@ class ProfessorPat {
               this.mute();
             }
           }
-          
+
           if (is(event, [60, 425], [110, 468])) {
             fullscreen();
           }
-
         } else if (game_state == "game") {
           // guess button 1
           if (is(event, [415, 145], [680, 212])) {
@@ -364,7 +363,9 @@ class ProfessorPat {
     this.muteButtonIsMuted.y = muteY;
     // stage.addChild(this.muteButtonIsMuted);
 
-    this.fullScreenButton = new createjs.Bitmap(preload.getResult("Fullscreen"));
+    this.fullScreenButton = new createjs.Bitmap(
+      preload.getResult("Fullscreen")
+    );
     this.fullScreenButton.x = 20 + 44;
     this.fullScreenButton.y = HEIGHT - 60;
     // stage.addChild(this.fullScreenButton);

@@ -274,7 +274,7 @@ class Game {
     stage.removeChild(this.incorrectAnswerScreenScoreText);
     stage.removeChild(this.gameOverTextImage);
     stage.removeChild(this.gameOverReasonText);
-    stage.removeChild(this.winOverText);
+    stage.removeChild(this.winOverTextImage);
   }
 
   hasEnded() {
@@ -322,7 +322,9 @@ class Game {
         this
       );
 
-    this.gameOverTextImage = new createjs.Bitmap(preload.getResult("GameOverTextImage"));
+    this.gameOverTextImage = new createjs.Bitmap(
+      preload.getResult("GameOverTextImage")
+    );
     this.gameOverTextImage.x = 0;
     this.gameOverTextImage.y = 0;
     stage.addChild(this.gameOverTextImage);
@@ -335,8 +337,7 @@ class Game {
 
     if (this.lives == 0) this.gameOverReasonText.text = "You ran out of lives";
     if (this.problemPoints == 0)
-      this.gameOverReasonText.text =
-        "You ran out of time.";
+      this.gameOverReasonText.text = "You ran out of time.";
 
     this.gameOverReasonText.y = 330;
     this.gameOverReasonText.x = WIDTH / 2;
@@ -383,14 +384,12 @@ class Game {
         this
       );
 
-    // TODO: Maybe add an image here
-    this.winOverText = new createjs.Text("", "48px Roboto", "black");
-    this.winOverText.y = 220;
-    this.winOverText.x = WIDTH / 2;
-    this.winOverText.text = "Victory, Professor Pat!";
-    this.winOverText.textAlign = "center";
-    this.winOverText.textBaseline = "middle";
-    stage.addChild(this.winOverText);
+    this.winOverTextImage = new createjs.Bitmap(
+      preload.getResult("WinOverTextImage")
+    );
+    this.winOverTextImage.x = 0;
+    this.winOverTextImage.y = 0;
+    stage.addChild(this.winOverTextImage);
   }
 
   initalizeGui() {
@@ -478,7 +477,7 @@ class Game {
     // stage.addChild(this.optionThreeDisplay);
 
     this.correctAnswerScreenText = new createjs.Text(
-      "~~Correct~~",
+      "~ Correct ~",
       "48px Roboto",
       "black"
     );
