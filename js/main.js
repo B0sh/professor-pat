@@ -56,12 +56,17 @@ class ProfessorPat {
       { id: "GameOverBackground", src: "images/background13.png" },
       { id: "WinOverBackground", src: "images/background4.png" },
       { id: "Menu", src: "images/cool-menu.png" },
+      { id: "GameOverTextImage", src: "images/game-over.png" },
+      { id: "YouWinTextImage", src: "images/you-win.png" },
+
       { id: "RedPerson", src: "images/person-red.png" },
       { id: "YellowPerson", src: "images/person-yellow.png" },
       { id: "OrangePerson", src: "images/person-orange.png" },
       { id: "PurplePerson", src: "images/person-purple.png" },
       { id: "GreenPerson", src: "images/person-green.png" },
       { id: "Life", src: "images/heart-small.png" },
+
+      { id: "Fullscreen", src: "images/fullscreen.png" },
       { id: "Mute", src: "images/mute-small.png" },
       { id: "Unmute", src: "images/unmute-small.png" },
 
@@ -173,7 +178,8 @@ class ProfessorPat {
     // fuck it global scope keyboard handling. get this game out!
     window.onkeyup = keyUpHandler;
     window.onkeydown = keyDownHandler;
-
+    
+    //! I can use ButtonHelper for this but I couldn't figure it out
     stage.on(
       "stagemousedown",
       function(event) {
@@ -188,40 +194,44 @@ class ProfessorPat {
 
         if (game_state == "menu") {
           // start button coords
-          //! I can use ButtonHelper for this but I couldn't figure it out
           if (is(event, [98, 325], [337, 394])) {
             this.startGame();
           }
 
           // mute button coords
-          //! I can use ButtonHelper for this but I couldn't figure it out
-          if (is(event, [656, 386], [702, 431])) {
+          if (is(event, [12, 425], [59, 468])) {
             if (this.save_file.volume == 0) {
               this.unmute();
             } else {
               this.mute();
             }
           }
+          
+          if (is(event, [60, 425], [110, 468])) {
+            fullscreen();
+          }
+
         } else if (game_state == "game") {
           // guess button 1
           if (is(event, [415, 145], [680, 212])) {
             game.answerQuestion(1);
-            console.log("Button 1");
           }
 
           // guess button 2
           if (is(event, [415, 212], [680, 275])) {
             game.answerQuestion(2);
-            console.log("Button 2");
           }
 
           // guess button 3
           if (is(event, [415, 275], [680, 337])) {
             game.answerQuestion(3);
-            console.log("Button 3");
+          }
+
+          if (is(event, [224, 359], [495, 433])) {
+            pat.endGame("space");
           }
         }
-        console.log(event, event.rawX, event.rawY);
+        console.log(event.rawX, event.rawY);
       },
       this
     );
@@ -260,6 +270,7 @@ class ProfessorPat {
     stage.removeChild(this.menu_text);
     stage.removeChild(this.muteButtonIsNotMuted);
     stage.removeChild(this.muteButtonIsMuted);
+    stage.removeChild(this.fullScreenButton);
     stage.removeChild(this.professor_pat);
     this.background.image = preload.getResult("GameBackground");
   }
@@ -282,6 +293,10 @@ class ProfessorPat {
       stage.addChild(this.muteButtonIsMuted);
     } else {
       stage.addChild(this.muteButtonIsNotMuted);
+    }
+
+    if (canFullscreen()) {
+      stage.addChild(this.fullScreenButton);
     }
   }
 
@@ -334,19 +349,25 @@ class ProfessorPat {
     this.highScoreMenuText.textAlign = "right";
     // stage.addChild(this.highScoreMenuText);
 
-    //TODO: create mute/unmute images
+    let muteX = 20;
+    let muteY = HEIGHT - 56;
+
     this.muteButtonIsNotMuted = new createjs.Bitmap(
       preload.getResult("Unmute")
     );
-    this.muteButtonIsNotMuted.x = WIDTH - 60;
-    this.muteButtonIsNotMuted.y = HEIGHT - 90;
+    this.muteButtonIsNotMuted.x = muteX;
+    this.muteButtonIsNotMuted.y = muteY;
     // stage.addChild(this.muteButtonIsNotMuted);
 
-    //TODO: create mute/unmute images
     this.muteButtonIsMuted = new createjs.Bitmap(preload.getResult("Mute"));
-    this.muteButtonIsMuted.x = WIDTH - 60;
-    this.muteButtonIsMuted.y = HEIGHT - 90;
+    this.muteButtonIsMuted.x = muteX;
+    this.muteButtonIsMuted.y = muteY;
     // stage.addChild(this.muteButtonIsMuted);
+
+    this.fullScreenButton = new createjs.Bitmap(preload.getResult("Fullscreen"));
+    this.fullScreenButton.x = 20 + 44;
+    this.fullScreenButton.y = HEIGHT - 60;
+    // stage.addChild(this.fullScreenButton);
 
     this.loadMainMenu();
   }
@@ -496,15 +517,13 @@ function fullscreen() {
   }
 }
 
-var docEl = document.getElementById("canvas_game");
-var requestFullScreen =
-  docEl.requestFullscreen ||
-  docEl.mozRequestFullScreen ||
-  docEl.webkitRequestFullScreen ||
-  docEl.msRequestFullscreen;
+function canFullscreen() {
+  var docEl = document.getElementById("canvas_game");
+  var requestFullScreen =
+    docEl.requestFullscreen ||
+    docEl.mozRequestFullScreen ||
+    docEl.webkitRequestFullScreen ||
+    docEl.msRequestFullscreen;
 
-if (typeof requestFullScreen === "undefined") {
-  $("#fullscreen_toggle").css("display", "none");
-} else {
-  $("#fullscreen_toggle").css("display", "inline");
+  return !(typeof requestFullScreen === "undefined");
 }
