@@ -48,7 +48,7 @@ class Game {
         switch (this.grid.props.colors) {
           case "down":
             this.grid.equation.offset -= this.grid.tile_width;
-            break; 
+            break;
           case "left":
             this.grid.equation.offset++;
             break;
@@ -489,23 +489,23 @@ class Game {
     this.problemScoreDisplay.textBaseline = "middle";
     stage.addChild(this.problemScoreDisplay);
 
-    this.optionOneDisplay = new createjs.Text("", "32px Roboto", "black");
-    this.optionOneDisplay.y = 200;
+    this.optionOneDisplay = new createjs.Text("", "40px Roboto", "black");
+    this.optionOneDisplay.y = 200 - 20;
     this.optionOneDisplay.x = 550;
     this.optionOneDisplay.textAlign = "center";
     this.optionOneDisplay.textBaseline = "middle";
     // this.optionOneDisplay.shadow = new createjs.Shadow("#333", 1, 1, 0);
     // stage.addChild(this.optionOneDisplay);
 
-    this.optionTwoDisplay = new createjs.Text("", "32px Roboto", "black");
-    this.optionTwoDisplay.y = 250;
+    this.optionTwoDisplay = new createjs.Text("", "40px Roboto", "black");
+    this.optionTwoDisplay.y = 250 - 5;
     this.optionTwoDisplay.x = 550;
     this.optionTwoDisplay.textAlign = "center";
     this.optionTwoDisplay.textBaseline = "middle";
     // stage.addChild(this.optionTwoDisplay);
 
-    this.optionThreeDisplay = new createjs.Text("", "32px Roboto", "black");
-    this.optionThreeDisplay.y = 300;
+    this.optionThreeDisplay = new createjs.Text("", "40px Roboto", "black");
+    this.optionThreeDisplay.y = 300 + 10;
     this.optionThreeDisplay.x = 550;
     this.optionThreeDisplay.textAlign = "center";
     this.optionThreeDisplay.textBaseline = "middle";
