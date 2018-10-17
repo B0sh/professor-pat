@@ -273,11 +273,9 @@ class Game {
     stage.removeChild(this.correctAnswerScreenScoreText);
     stage.removeChild(this.incorrectAnswerScreenText);
     stage.removeChild(this.incorrectAnswerScreenScoreText);
-    stage.removeChild(this.gameOverText);
-    stage.removeChild(this.gameOverPressSpace);
+    stage.removeChild(this.gameOverTextImage);
     stage.removeChild(this.gameOverReasonText);
     stage.removeChild(this.winOverText);
-    stage.removeChild(this.winOverText2);
   }
 
   hasEnded() {
@@ -325,43 +323,27 @@ class Game {
         this
       );
 
-    // TODO: Maybe add an image here
-    this.gameOverText = new createjs.Text("", "48px Roboto", "black");
-    this.gameOverText.y = 220;
-    this.gameOverText.x = WIDTH / 2;
-    this.gameOverText.text = "Game Over";
-    this.gameOverText.textAlign = "center";
-    this.gameOverText.textBaseline = "middle";
-    stage.addChild(this.gameOverText);
+    this.gameOverTextImage = new createjs.Bitmap(preload.getResult("GameOverTextImage"));
+    this.gameOverTextImage.x = 0;
+    this.gameOverTextImage.y = 0;
+    stage.addChild(this.gameOverTextImage);
 
     this.gameOverReasonText = new createjs.Text(
       "You died IRL",
       "italic 20px Roboto",
       "#222"
     );
+
     if (this.lives == 0) this.gameOverReasonText.text = "You ran out of lives";
     if (this.problemPoints == 0)
       this.gameOverReasonText.text =
-        "You ran out of problem points (TODO how to communicate this)";
+        "You ran out of time.";
 
     this.gameOverReasonText.y = 330;
     this.gameOverReasonText.x = WIDTH / 2;
     this.gameOverReasonText.textAlign = "center";
     this.gameOverReasonText.textBaseline = "middle";
     stage.addChild(this.gameOverReasonText);
-
-    this.gameOverPressSpace = new createjs.Text(
-      "",
-      "italic 20px Roboto",
-      "#444"
-    );
-    this.gameOverPressSpace.y = 360;
-    this.gameOverPressSpace.x = WIDTH / 2;
-    this.gameOverPressSpace.text =
-      "Press space to go back to the main menu i guess";
-    this.gameOverPressSpace.textAlign = "center";
-    this.gameOverPressSpace.textBaseline = "middle";
-    stage.addChild(this.gameOverPressSpace);
   }
 
   winOver() {
@@ -410,14 +392,6 @@ class Game {
     this.winOverText.textAlign = "center";
     this.winOverText.textBaseline = "middle";
     stage.addChild(this.winOverText);
-
-    this.winOverText2 = new createjs.Text("", "italic 20px Roboto", "#444");
-    this.winOverText2.y = 340;
-    this.winOverText2.x = WIDTH / 2;
-    this.winOverText2.text = "Press space to go back to the main menu i guess";
-    this.winOverText2.textAlign = "center";
-    this.winOverText2.textBaseline = "middle";
-    stage.addChild(this.winOverText2);
   }
 
   initalizeGui() {
