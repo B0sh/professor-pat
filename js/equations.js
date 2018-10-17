@@ -3,6 +3,7 @@
 function Equation(id, generate, is) {
   this.id = id;
   this.generate = generate;
+  this.seed = getRandomInt(1, 65565);
   this.is = is;
 }
 

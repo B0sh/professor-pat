@@ -32,10 +32,14 @@ function getRandomIntNot(min, max, not) {
   return randy;
 }
 
-/* phpjs number_format */
-function Format(number, decimals, dec_point, thousands_sep) {
-  //  discuss at: http://phpjs.org/functions/number_format/
+// https://stackoverflow.com/questions/521295/seeding-the-random-number-generator-in-javascript
+function getRandomSeeded(seed) {
+  var x = Math.sin(seed) * 10000;
+  return x - Math.floor(x);
+}
 
+// http://phpjs.org/functions/number_format/
+function Format(number, decimals, dec_point, thousands_sep) {
   number = (number + "").replace(/[^0-9+\-Ee.]/g, "");
   var n = !isFinite(+number) ? 0 : +number,
     prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),

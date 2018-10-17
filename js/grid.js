@@ -32,6 +32,7 @@ class Grid {
   render() {
     // loop through all tiles
     var slot = 0;
+    this.seed = this.equation.seed;
     for (let y = 0; y < this.tile_height; y++) {
       for (let x = 0; x < this.tile_width; x++) {
         slot++;
@@ -48,6 +49,15 @@ class Grid {
   }
 
   addTile(x, y, active) {
+    //TODO: use grey people instead of blanks
+    if (this.props.missing) {
+      // seeded so that the same elements are missing upon color refresh
+      this.seed += 1;
+      if (getRandomSeeded(this.seed) < this.props.missing / 100) {
+        return false;
+      }
+    }
+
     let person_image;
     if (active == true) person_image = preload.getResult(this.person_active);
     else person_image = preload.getResult(this.person_inactive);
