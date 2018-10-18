@@ -8,7 +8,7 @@ Animation idea:
 */
 
 var VERSION = 1;
-var BACKGROUND_COUNT = 14;
+var BACKGROUND_COUNT = 17;
 var WIDTH = 720;
 var HEIGHT = 480;
 var temp = 1;
@@ -54,11 +54,12 @@ class ProfessorPat {
       { id: "MenuBackground", src: "images/background2.png" },
       { id: "GameBackground", src: "images/background0.png" },
       { id: "GameOverBackground", src: "images/background13.png" },
-      { id: "WinOverBackground", src: "images/background4.png" },
+      { id: "WinOverBackground", src: "images/background15.png" },
       { id: "Menu", src: "images/cool-menu.png" },
       { id: "GameOverTextImage", src: "images/game-over.png" },
       { id: "WinOverTextImage", src: "images/you-win.png" },
 
+      { id: "GreyPerson", src: "images/person-grey.png" },
       { id: "RedPerson", src: "images/person-red.png" },
       { id: "YellowPerson", src: "images/person-yellow.png" },
       { id: "OrangePerson", src: "images/person-orange.png" },
@@ -473,15 +474,18 @@ function keyDownHandler(event) {
         case 27:
           pat.endGame("escape");
           break;
-        case 49:
+        case 49: // 1
+        case 97: // Numpad1
           game.answerQuestion(1);
-          break; // 1
-        case 50:
+          break;
+        case 50: // 2
+        case 98: // Numpad2
           game.answerQuestion(2);
-          break; // 2
-        case 51:
+          break;
+        case 51: // 3
+        case 99: // Numpad3
           game.answerQuestion(3);
-          break; // 3
+          break;
         case 32:
           pat.endGame("space");
           break; // space
