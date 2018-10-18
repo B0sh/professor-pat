@@ -42,7 +42,7 @@ class Game {
     }
 
     if (this.problem_active && this.grid && this.grid.props.colors) {
-      if (this.ticks % 12 == 0) {
+      if (this.ticks % 18 == 0) {
         // console.log(this.grid.tile_width, this.grid.tile_height);
         //! directions don't work properly
         switch (this.grid.props.colors) {

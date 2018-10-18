@@ -49,18 +49,19 @@ class Grid {
   }
 
   addTile(x, y, active) {
-    //TODO: use grey people instead of blanks
+    let person_image;
+
+    if (active == true) person_image = preload.getResult(this.person_active);
+    else person_image = preload.getResult(this.person_inactive);
+
     if (this.props.missing) {
       // seeded so that the same elements are missing upon color refresh
       this.seed += 1;
       if (getRandomSeeded(this.seed) < this.props.missing / 100) {
-        return false;
+        person_image = preload.getResult("GreyPerson");
       }
     }
 
-    let person_image;
-    if (active == true) person_image = preload.getResult(this.person_active);
-    else person_image = preload.getResult(this.person_inactive);
 
     var data = {
       images: [person_image],

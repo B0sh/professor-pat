@@ -23,72 +23,80 @@ var levels = {
     id: 1,
     question_count: 4,
     next_level: "level2",
-    background: "Background12",
+    background: "Background0",
     generate: function() {
       return new Grid(
         11,
         11,
-        {},
-        // { missing: 30 },
-        // { rotation: 30 },
-        // { colors: "right", rotation: 30 },
+        { },
+        // { missing: 30, rotation: 30, colors: "right" },
         equations["single"].generate([3, 6])
       );
     }
   },
+
   level2: {
     id: 2,
-    question_count: 6,
+    question_count: 5,
     next_level: "level3",
     background: "Background1",
     generate: function() {
       return new Grid(
         getRandomInt(10, 11),
         getRandomInt(9, 10),
-        {},
-        equations["single"].generate([3, 9])
+        {
+          missing: 10
+        },
+        equations["single"].generate([3, 7])
       );
     }
   },
+
   level3: {
     id: 3,
-    question_count: 6,
+    question_count: 5,
     next_level: "level4",
+    background: "Background7",
+    generate: function() {
+      return new Grid(12, 11, {}, equations["double"].generate([2, 5]));
+
+    }
+  },
+
+  level4: {
+    id: 4,
+    question_count: 6,
+    next_level: "level5",
+    background: "Background8",
+    generate: function() {
+      let directions = ["up", "down", "left", "right"];
+
+      return new Grid(
+        7,
+        7,
+        { colors: directions[getRandomInt(0, directions.length - 1)] },
+        equations["single"].generate([3, 7])
+      );    
+    }
+  },
+
+  level5: {
+    id: 5,
+    question_count: 7,
+    next_level: "level6",
     background: "Background9",
     generate: function() {
       let directions = ["up", "down", "left", "right"];
 
       return new Grid(
-        7,
-        7,
-        { colors: directions[getRandomInt(0, directions.length - 1)] },
-        equations["single"].generate([3, 6])
-      );
-    }
-  },
-  level4: {
-    id: 4,
-    question_count: 8,
-    next_level: "level5",
-    background: "Background12",
-    generate: function() {
-      let directions = ["up", "down", "left", "right"];
-
-      return new Grid(
         getRandomInt(6, 10),
         getRandomInt(6, 10),
-        { colors: directions[getRandomInt(0, directions.length - 1)] },
+        { 
+          colors: directions[getRandomInt(0, directions.length - 1)], 
+          missing: 15 
+        },
         equations["single"].generate([3, 9])
       );
-    }
-  },
-  level5: {
-    id: 5,
-    question_count: 4,
-    next_level: "level6",
-    background: "Background8",
-    generate: function() {
-      return new Grid(12, 11, {}, equations["double"].generate([2, 5]));
     }
   },
 
@@ -96,12 +104,14 @@ var levels = {
     id: 6,
     question_count: 6,
     next_level: "level7",
-    background: "Background8",
+    background: "Background16",
     generate: function() {
+      let directions = ["up", "down", "left", "right"];
+
       return new Grid(
         getRandomInt(6, 10),
         getRandomInt(6, 10),
-        {},
+        { colors: directions[getRandomInt(0, directions.length - 1)]},
         equations["double"].generate([2, 7])
       );
     }
@@ -109,38 +119,42 @@ var levels = {
 
   level7: {
     id: 7,
-    question_count: 6,
+    question_count: 7,
     next_level: "level8",
-    background: "Background8",
+    background: "Background14",
     generate: function() {
       return new Grid(
         getRandomInt(6, 10),
         getRandomInt(6, 10),
         { rotation: 25 },
-        equations["single"].generate([3, 9])
+        equations["single"].generate([5, 12])
       );
     }
   },
 
   level8: {
     id: 8,
-    question_count: 6,
+    question_count: 8,
     next_level: "level9",
-    background: "Background8",
+    background: "Background4",
     generate: function() {
       return new Grid(
         getRandomInt(6, 10),
         getRandomInt(6, 10),
-        {},
+        { 
+          colors: directions[getRandomInt(0, directions.length - 1)],
+          missing: 15
+        },
         equations["double"].generate([2, 7])
       );
     }
   },
+
   level9: {
     id: 9,
     question_count: 8,
     next_level: "Done",
-    background: "Background7",
+    background: "Background16",
     generate: function() {
       let directions = ["up", "down", "left", "right"];
 
@@ -149,12 +163,14 @@ var levels = {
         getRandomInt(8, 10),
         {
           colors: directions[getRandomInt(0, directions.length - 1)],
-          rotation: 25
+          rotation: 25,
+          missing: 15,
         },
         equations["double"].generate([3, 9])
       );
     }
   },
+  
   Done: {
     id: "Done",
     victory: true
