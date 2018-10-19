@@ -177,6 +177,29 @@ class Game {
 
     pat.background_fade.image = preload.getResult(this.level.background);
 
+    var data = {
+      images: [preload.getResult("ProfessorPat")],
+      framerate: 6,
+      frames: [
+        [  0, 300, 200, 200],
+        [200, 300, 200, 200],
+        [400, 300, 200, 200],
+        [600, 300, 200, 200],
+        [800, 300, 200, 200]
+      ],
+      animations: {
+        idle: {
+          speed: 1 / 8,
+          frames: [0, 1, 2, 3, 4, 3, 2, 1]
+        }
+      }
+    };
+    let s = new createjs.SpriteSheet(data);
+    this.levelUpPat  = new createjs.Sprite(s, "idle");
+    this.levelUpPat.x = 261;
+    this.levelUpPat.y = 60;
+    stage.addChild(this.levelUpPat);
+
     createjs.Tween.get(pat.background_fade)
       .to({ alpha: 1 }, 4900)
       .call(
@@ -186,6 +209,7 @@ class Game {
 
           this.nextProblem();
           stage.removeChild(this.levelUpScreenText);
+          stage.removeChild(this.levelUpPat);
         },
         [],
         this

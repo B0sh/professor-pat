@@ -71,7 +71,7 @@ class ProfessorPat {
       { id: "Mute", src: "images/mute-small.png" },
       { id: "Unmute", src: "images/unmute-small.png" },
 
-      { id: "ProfessorPat", src: "images/pp-4.png" },
+      { id: "ProfessorPat", src: "images/professor-pat.png" },
 
       { id: "Soundtrack", src: "soundtrack-loopable.wav" }
     ];
