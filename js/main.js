@@ -103,7 +103,7 @@ class ProfessorPat {
     stage.addChild(this.loadingScreenBackground);
 
     this.loadingScreenText = new createjs.Text(
-      "Loading... Game... Soon...",
+      "Loading...",
       "italic 40px Roboto",
       "#aa0"
     );

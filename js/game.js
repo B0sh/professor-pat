@@ -123,7 +123,7 @@ class Game {
     this.tutorialText3 = new createjs.Text("", "24px Roboto", "#111");
     this.tutorialText3.y = 300;
     this.tutorialText3.x = 40;
-    this.tutorialText3.text = "Watch out for these guys! They won't count.";
+    this.tutorialText3.text = "Watch out for these guys! They're wild.";
     stage.addChild(this.tutorialText3);
 
     var data = {
