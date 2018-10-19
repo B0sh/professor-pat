@@ -176,7 +176,6 @@ class ProfessorPat {
       loop: -1
     });
 
-    // fuck it global scope keyboard handling. get this game out!
     window.onkeyup = keyUpHandler;
     window.onkeydown = keyDownHandler;
 
@@ -212,6 +211,11 @@ class ProfessorPat {
             fullscreen();
           }
         } else if (game_state == "game") {
+          if (game.tutorial_active) {
+            game.endTutorial();
+            return; 
+          }
+
           // guess button 1
           if (is(event, [415, 145], [680, 212])) {
             game.answerQuestion(1);
@@ -298,6 +302,7 @@ class ProfessorPat {
     if (canFullscreen()) {
       stage.addChild(this.fullScreenButton);
     }
+
   }
 
   createMainMenu() {
@@ -318,8 +323,8 @@ class ProfessorPat {
       images: [preload.getResult("ProfessorPat")],
       framerate: 8,
       frames: {
-        width: 270,
-        height: 270
+        width: 200,
+        height: 300
       },
       animations: {
         idle: {
@@ -337,6 +342,7 @@ class ProfessorPat {
     // this.professor_pat.scaleX = 1.2;
     // this.professor_pat.scaleY = 1.2;
     // stage.addChild(this.professor_pat);
+
 
     this.menu_text = new createjs.Bitmap(preload.getResult("Menu"));
     this.menu_text.x = 0;

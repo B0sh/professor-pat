@@ -45,7 +45,7 @@ var levels = {
         getRandomInt(10, 11),
         getRandomInt(9, 10),
         {
-          missing: 10
+          missing: 8
         },
         equations["single"].generate([3, 7])
       );
@@ -74,7 +74,10 @@ var levels = {
       return new Grid(
         7,
         7,
-        { colors: directions[getRandomInt(0, directions.length - 1)] },
+        { 
+          colors: directions[getRandomInt(0, directions.length - 1)], 
+          refresh_interval: 20,
+        },
         equations["single"].generate([3, 7])
       );    
     }
@@ -93,7 +96,8 @@ var levels = {
         getRandomInt(6, 10),
         { 
           colors: directions[getRandomInt(0, directions.length - 1)], 
-          missing: 15 
+          refresh_interval: 20,
+          missing: 10 
         },
         equations["single"].generate([3, 9])
       );
@@ -102,16 +106,19 @@ var levels = {
 
   level6: {
     id: 6,
-    question_count: 6,
+    question_count: 7,
     next_level: "level7",
-    background: "Background16",
+    background: "Background15",
     generate: function() {
       let directions = ["up", "down", "left", "right"];
 
       return new Grid(
         getRandomInt(6, 10),
         getRandomInt(6, 10),
-        { colors: directions[getRandomInt(0, directions.length - 1)]},
+        { 
+          colors: directions[getRandomInt(0, directions.length - 1)], 
+          refresh_interval: 20,
+        },
         equations["double"].generate([2, 7])
       );
     }
@@ -119,7 +126,7 @@ var levels = {
 
   level7: {
     id: 7,
-    question_count: 7,
+    question_count: 10,
     next_level: "level8",
     background: "Background14",
     generate: function() {
@@ -138,12 +145,15 @@ var levels = {
     next_level: "level9",
     background: "Background4",
     generate: function() {
+      let directions = ["up", "down", "left", "right"];
+
       return new Grid(
         getRandomInt(6, 10),
         getRandomInt(6, 10),
         { 
-          colors: directions[getRandomInt(0, directions.length - 1)],
-          missing: 15
+          colors: directions[getRandomInt(0, directions.length - 1)], 
+          refresh_interval: 20,
+          missing: 10
         },
         equations["double"].generate([2, 7])
       );
@@ -162,15 +172,16 @@ var levels = {
         getRandomInt(10, 12),
         getRandomInt(8, 10),
         {
-          colors: directions[getRandomInt(0, directions.length - 1)],
+          colors: directions[getRandomInt(0, directions.length - 1)], 
+          refresh_interval: 20,
           rotation: 25,
-          missing: 15,
+          missing: 10,
         },
         equations["double"].generate([3, 9])
       );
     }
   },
-  
+
   Done: {
     id: "Done",
     victory: true

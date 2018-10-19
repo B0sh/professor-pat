@@ -18,13 +18,15 @@ class Game {
     ];
 
     this.problem_active = false;
+    this.tutorial_active = false;
 
     this.initalizeGui();
 
     this.updateLives();
     this.updateProblemScore();
 
-    this.nextProblem();
+    this.setupTutorial();
+
   }
 
   // from stage.tick
@@ -41,8 +43,8 @@ class Game {
       this.updateProblemScore();
     }
 
-    if (this.problem_active && this.grid && this.grid.props.colors) {
-      if (this.ticks % 18 == 0) {
+    if ((this.problem_active || this.tutorial_active) && this.grid && this.grid.props.colors) {
+      if (this.ticks % this.grid.props.refresh_interval == 0) {
         // console.log(this.grid.tile_width, this.grid.tile_height);
         //! directions don't work properly
         switch (this.grid.props.colors) {
@@ -88,6 +90,99 @@ class Game {
     for (let l = 3; l > this.lives; l--) {
       stage.removeChild(this.lifeDispays[l - 1]);
     }
+  }
+
+  setupTutorial() {
+    this.tutorial_active = true;
+    this.grid = new Grid(
+      10,
+      1,
+      { 
+        colors: "right",
+        refresh_interval: 30,
+      },
+      equations["single"].generate([4, 5])
+    );
+
+    this.grid.render();
+
+
+
+    this.tutorialText1 = new createjs.Text("", "24px Roboto", "#111");
+    this.tutorialText1.y = 140;
+    this.tutorialText1.x = 40;
+    this.tutorialText1.text = " -----> Look left to right  -----> ";
+    stage.addChild(this.tutorialText1);
+
+    this.tutorialText2 = new createjs.Text("", "32px Roboto", "#111");
+    this.tutorialText2.y = 200;
+    this.tutorialText2.x = 40;
+    this.tutorialText2.text = "How many people does it take\nfor the pattern to repeat?";
+    stage.addChild(this.tutorialText2);
+
+    this.tutorialText3 = new createjs.Text("", "24px Roboto", "#111");
+    this.tutorialText3.y = 300;
+    this.tutorialText3.x = 40;
+    this.tutorialText3.text = "Watch out for these guys! They won't count.";
+    stage.addChild(this.tutorialText3);
+
+    var data = {
+      images: [preload.getResult("GreyPerson")],
+      framerate: 5,
+      frames: {
+        width: 32,
+        height: 32
+      },
+      animations: {
+        idle: {
+          speed: 1 / 7,
+          frames: [0, 1, 2, 1]
+        }
+      }
+    };
+
+    let startX = 180;
+    let startY = 330;
+
+    let spritesheet = new createjs.SpriteSheet(data);
+    this.tutorialExampleGreyPerson1 = new createjs.Sprite(spritesheet, "idle");
+    this.tutorialExampleGreyPerson1.x = startX;
+    this.tutorialExampleGreyPerson1.y = startY;
+    stage.addChild(this.tutorialExampleGreyPerson1);
+    
+    this.tutorialExampleGreyPerson2 = new createjs.Sprite(spritesheet, "idle");
+    this.tutorialExampleGreyPerson2.x = startX + 32;
+    this.tutorialExampleGreyPerson2.y = startY;
+    stage.addChild(this.tutorialExampleGreyPerson2);
+    
+    this.tutorialExampleGreyPerson3 = new createjs.Sprite(spritesheet, "idle");
+    this.tutorialExampleGreyPerson3.x = startX + 64;
+    this.tutorialExampleGreyPerson3.y = startY;
+    stage.addChild(this.tutorialExampleGreyPerson3);
+
+    this.tutorialText4 = new createjs.Text("", "italic 24px Roboto", "#333");
+    this.tutorialText4.y = HEIGHT - 70;
+    this.tutorialText4.x = WIDTH / 2 - 120;
+    this.tutorialText4.text = "Click anywhere to begin.";
+    this.tutorialText4.textAlign = "center";
+    this.tutorialText4.textBaseline = "middle";
+    stage.addChild(this.tutorialText4);
+  }
+
+  endTutorial() {
+    this.grid.destroy();
+
+    this.tutorial_active = false;
+    stage.removeChild(this.tutorialExampleGreyPerson1);
+    stage.removeChild(this.tutorialExampleGreyPerson2);
+    stage.removeChild(this.tutorialExampleGreyPerson3);
+    stage.removeChild(this.tutorialText1);
+    stage.removeChild(this.tutorialText2);
+    stage.removeChild(this.tutorialText3);
+    stage.removeChild(this.tutorialText4);
+
+
+    this.nextProblem();
   }
 
   // logic on question answered
